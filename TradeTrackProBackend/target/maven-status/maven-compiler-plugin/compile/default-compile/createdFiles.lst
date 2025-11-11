@@ -1,0 +1,7 @@
+com\tradetrackpro\repository\UserRepository.class
+com\tradetrackpro\TradeTrackProBackendApplication.class
+com\tradetrackpro\model\User.class
+com\tradetrackpro\repository\TradeRepository.class
+com\tradetrackpro\model\User$UserBuilder.class
+com\tradetrackpro\model\Trade$TradeBuilder.class
+com\tradetrackpro\model\Trade.class
