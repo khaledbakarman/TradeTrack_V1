@@ -1,0 +1,15 @@
+﻿# Ignore build and IDE files
+/target/
+/.idea/
+/.vscode/
+/out/
+/bin/
+
+# Ignore logs and temp files
+*.log
+*.tmp
+
+# Ignore system and environment files
+.DS_Store
+.env
+application.properties
