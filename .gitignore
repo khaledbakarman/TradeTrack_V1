@@ -13,3 +13,6 @@
 .DS_Store
 .env
 application.properties
+TradeTrackProBackend/target/
+TradeTrackProBackend/.idea/
+TradeTrackProBackend/.vscode/

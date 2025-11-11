@@ -73,4 +73,40 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>auto-git</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.5.0</version>
+            <executions>
+              <execution>
+                <id>auto-git-commit</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>powershell</executable>
+                  <arguments>
+                    <argument>-NoProfile</argument>
+                    <argument>-ExecutionPolicy</argument>
+                    <argument>Bypass</argument>
+                    <argument>-Command</argument>
+                    <argument>
+                      git -C "${project.basedir}/.." add .; $c=(git -C "${project.basedir}/.." diff --cached --name-only); if ($c) { git -C "${project.basedir}/.." commit -m ("Auto(build): " + ($c -join ', ')) }
+                    </argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>
