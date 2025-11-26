@@ -120,5 +120,126 @@ Common notes:
 - Seed data / schema evolution (Flyway or Liquibase).
 - Security (Spring Security) if needed later.
 
----
-Last updated: 2025-11-10
+-Last updated: 2025-11-22
+
+## 10) 2025-11-13 — Work Summary
+
+- **Git setup and automation**
+  - Initialized Git repo, set remote `origin` to `https://github.com/khaledbakarman/TradeTrack_V1.git`, branch `main`.
+  - Created/updated `.gitignore` (project and module-specific ignores) and `README.md`.
+  - Added post-commit hook to auto-push after each commit.
+  - Added optional Maven profile `auto-git` (exec-maven-plugin) to auto-commit on successful build when run with `-Pauto-git`.
+
+- **Auth feature (register/login)**
+  - Added DTOs: `RegisterRequest`, `LoginRequest`, `AuthResponse`.
+  - Updated `UserRepository` with `findByUsername`.
+  - Implemented `UserService` with registration/login logic and validations:
+    - No duplicate usernames (checks repository).
+    - Password required. Note: stored in plain text for now (to be replaced with hashing later).
+  - Added `UserController` with REST endpoints:
+    - `POST /api/auth/register`
+    - `POST /api/auth/login`
+  - JSON responses like `{ "userId": 1, "message": "Registration successful" }` / `"Login successful"`.
+
+- **Run and test**
+  - Application started successfully. When port 8080 was in use, ran on `8081`.
+  - Fixed 404 caused by newline encoded in Postman URL (`%0A`). Correct URL must be exactly `http://localhost:<port>/api/auth/register` with no trailing newline.
+
+- **Quick test examples**
+  - Register: `POST /api/auth/register` with body `{ "username": "alice", "password": "pass" }` → `200 OK` with userId and message.
+  - Login: `POST /api/auth/login` with same credentials → `200 OK` with userId and message.
+
+## 11) 2025-11-15 — Work Summary
+
+- **Trade feature build**
+  - Added `TradeRequest` and `TradeResponse` DTOs (clean fields requested by frontend, doubles for prices, userId reference).
+  - Created `TradeService` and `TradeController` with full CRUD endpoints:
+    - `POST /api/trades` (create), `GET /api/trades?userId` (list by user), `GET /api/trades/{id}`, `PUT /api/trades/{id}`, `DELETE /api/trades/{id}`.
+  - Each controller method includes brief comments to memorize the REST flow.
+
+- **Validation & data rules**
+  - Manual validation in service: userId required, symbol required, entryPrice > 0.
+  - Added helper to convert incoming Double prices to `BigDecimal` so entity fields remain precise.
+
+- **Troubleshooting**
+  - Fixed corrupted `TradeRequest.java` by replacing it with a clean version (fields: symbol, entryPrice, exitPrice, profitLoss, notes, userId).
+  - Resolved compilation errors caused by type mismatch (Double vs BigDecimal) and missing `tradeDate` getter by updating `TradeService` to match the new DTO structure.
+
+- **Testing**
+  - After fixes, project ready to run with `mvn spring-boot:run`. Test endpoints with valid JSON payloads, e.g.:
+    ```json
+    { "userId": 1, "symbol": "AAPL", "entryPrice": 150.5, "exitPrice": 152.0, "profitLoss": 1.5, "notes": "swing" }
+    ```
+
+## 12) 2025-11-17 — Work Summary
+
+- **Frontend-ready CORS config**
+  - Created `config/` package and added `WebConfig` bean.
+  - Enabled CORS for `http://localhost:4200` with GET/POST/PUT/DELETE/OPTIONS, custom headers, and credentials.
+
+- **Notes**
+  - Angular frontend can now call all REST endpoints without browser blocking.
+  - Keep additional origins or headers in mind when deploying to other environments.
+
+## 13) 2025-11-18 — Work Summary
+
+- **Angular phase 3 kickoff**
+  - Scaffolded `TradeTrackProFrontend` with routing and SCSS, installed npm dependencies.
+  - Started `ng serve` so http://localhost:4200 serves the brand-new SPA.
+- **Component groundwork**
+  - Generated `components/login`, `components/register`, `components/trade-list`, `components/add-trade`, `components/analytics`, and `components/navbar` to support the upcoming UI.
+  - The CLI updated `AppModule` with these declarations automatically.
+
+## 14) 2025-11-19 — Work Summary
+
+- **Angular models + service**
+  - Added `User` and `Trade` interfaces under `src/app/models` so the frontend knows the payload shapes.
+  - Created `TradeService` in `src/app/services` with register/login, trade CRUD, and analytics methods pointing at `http://localhost:8080/api`.
+  - Service now uses `HttpClient` to call Spring Boot, so the UI has a shared entry point for backend data. phase 3 step 4 done.
+
+## 15) 2025-11-20 — Work Summary
+
+- **Routing & login UI**
+  - Declared routes for `login`, `register`, `trades`, `add-trade`, and `analytics`, defaulting to `login` so the SPA hits the auth screen first.
+  - Wired `HttpClientModule` into `AppModule` so HTTP calls can flow from service to API.
+  - Implemented `LoginComponent` with two-way binding, the service call, localStorage storage of `userId`, and navigation to `/trades` on success.
+
+## 16) 2025-11-21 — Work Summary
+
+- **Simplified routing and app component/module wiring**
+  - Removed redundant imports and simplified routing configuration.
+  - Improved module wiring for better organization and maintainability.
+- **Login UI enhancements**
+  - Added form validation and error handling for a better user experience.
+  - Improved UI styling for a more visually appealing design.
+
+**Login polish**
+  - Finalized login UI with input validation and error messages.
+  - Updated last updated date to reflect the latest changes.
+
+## 17) 2025-11-22 — Work Summary
+
+- **Register workflow polish**
+  - Crafted `register.component.html`/SCSS for a clean form, added alerts, and navigation back to `/login`.
+  - Fixed `register.component.ts` to post to `http://localhost:8080/api/auth/register` with next/error subscribers so success is handled correctly and backend 400s show the right message.
+  - Recovered the `/register` route plus redirect in `app-routing.module.ts` so opening `/register` no longer bounces to `/login`.
+  - Confirmed `AppModule` still declares every UI component and imports `FormsModule` so both login/register templates bind properly.
+
+## 18) 2025-11-24 — Work Summary
+
+- **Auth routing and services**
+  - Added `AuthService` (login + register helpers) pointing exactly at `http://localhost:8080/api/auth/login`/`register`.
+  - Swapped `LoginComponent` to call `AuthService` so the JWT token can be stored and `/trades` is now resolved via router.
+  - Added the `/trades` route and kept `/login`/`/register` so navigation remains stable after authentication.
+
+## 19) 2025-11-25 — Work Summary
+
+- **Trade list UI**
+  - Rebuilt `trade-list.component.html` to show a trades list, including a zero-state message, profit/loss styles, and trade detail blocks.
+  - Added corresponding SCSS so the trade cards have spacing, elevation, and conditional coloring for profit vs loss.
+
+## 20) 2025-11-26 — Work Summary
+
+- **Services & routing polish**
+  - Centralized `TradeService` on `http://localhost:8080/api/trades` and added request logging via `tap(...)` so each GET logs success/failure for the current user.
+  - Updated `angular.json` serve options to enable `historyApiFallback` so deep links keep landing on the SPA.

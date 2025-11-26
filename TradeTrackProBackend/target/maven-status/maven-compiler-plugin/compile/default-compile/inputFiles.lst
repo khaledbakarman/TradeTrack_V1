@@ -1,5 +1,15 @@
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\config\WebConfig.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\controller\TradeController.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\controller\UserController.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\AuthResponse.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\LoginRequest.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\RegisterRequest.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\TradeRequest.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\TradeResponse.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\model\Trade.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\model\User.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\repository\TradeRepository.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\repository\UserRepository.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\service\TradeService.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\service\UserService.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\TradeTrackProBackendApplication.java

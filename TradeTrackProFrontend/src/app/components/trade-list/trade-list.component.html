@@ -1,0 +1,26 @@
+<div class="trade-list-container">
+  <h2>Your Trades</h2>
+
+  <div *ngIf="trades.length === 0" class="no-trades">
+    No trades added yet.
+  </div>
+
+  <div class="trade-card" *ngFor="let trade of trades">
+    <div class="trade-header">
+      <span class="symbol">{{ trade.symbol }}</span>
+      <span class="entry-exit">
+        {{ trade.entryPrice | number:'1.2-2' }} → {{ trade.exitPrice | number:'1.2-2' }}
+      </span>
+    </div>
+
+    <div class="trade-details">
+      <p>
+        <strong>Profit:</strong>
+        <span [ngClass]="{ 'positive': trade.profitLoss > 0, 'negative': trade.profitLoss < 0 }">
+          {{ trade.profitLoss | number:'1.2-2' }}
+        </span>
+      </p>
+      <p><strong>Notes:</strong> {{ trade.notes || 'None' }}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+.trade-list-container {
+  width: 600px;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.trade-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.trade-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.symbol {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.profit {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.profit.positive {
+  color: green;
+}
+
+.profit.negative {
+  color: red;
+}
+
+.trade-details p {
+  margin: 4px 0;
+}
+
+.no-trades {
+  text-align: center;
+  font-style: italic;
+  color: gray;
+}
