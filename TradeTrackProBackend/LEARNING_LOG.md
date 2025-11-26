@@ -243,3 +243,15 @@ Common notes:
 - **Services & routing polish**
   - Centralized `TradeService` on `http://localhost:8080/api/trades` and added request logging via `tap(...)` so each GET logs success/failure for the current user.
   - Updated `angular.json` serve options to enable `historyApiFallback` so deep links keep landing on the SPA.
+
+## 21) 2025-11-26 — Navbar Implementation
+
+- **Navbar Component**
+  - Implemented `NavbarComponent` with "Trades", "Add Trade", "Analytics" links and "Logout" button.
+  - Added logic to hide navbar on `/login` and `/register` routes using `Router` events in `AppComponent`.
+  - Styled with a clean, professional look (white background, shadow, responsive layout).
+  - Implemented `logout()` to clear `userId` from localStorage and redirect to login.
+
+- **Routing Updates**
+  - Added routes for `add-trade` and `analytics` in `AppRoutingModule`.
+  - Integrated `NavbarComponent` into `AppComponent` template.

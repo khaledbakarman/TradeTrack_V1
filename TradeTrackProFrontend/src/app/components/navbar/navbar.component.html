@@ -1,1 +1,13 @@
-<p>navbar works!</p>
+<nav class="navbar">
+  <div class="nav-left">
+    <span class="logo">TradeTrackPro</span>
+  </div>
+
+  <div class="nav-right">
+    <a routerLink="/trades" routerLinkActive="active">Trades</a>
+    <a routerLink="/add-trade" routerLinkActive="active">Add Trade</a>
+    <a routerLink="/analytics" routerLinkActive="active">Analytics</a>
+
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</nav>
