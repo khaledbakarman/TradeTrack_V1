@@ -1,1 +1,17 @@
-<p>add-trade works!</p>
+<div class="add-trade-container">
+    <h2>Add Trade</h2>
+
+    <label>Symbol</label>
+    <input type="text" [(ngModel)]="symbol" placeholder="AAPL" />
+
+    <label>Entry Price</label>
+    <input type="number" [(ngModel)]="entryPrice" step="0.01" />
+
+    <label>Exit Price</label>
+    <input type="number" [(ngModel)]="exitPrice" step="0.01" />
+
+    <label>Notes</label>
+    <textarea [(ngModel)]="notes" rows="3" placeholder="Notes"></textarea>
+
+    <button (click)="submit()">Save Trade</button>
+</div>

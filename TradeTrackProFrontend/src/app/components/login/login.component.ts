@@ -12,22 +12,21 @@ export class LoginComponent {
   username = '';
   password = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
-  login() {
+  submit() {
     this.authService.login(this.username, this.password).subscribe({
-      next: (response) => {
-        alert('Login successful!');
-        const incomingUserId = response?.userId;
-        if (incomingUserId) {
-          localStorage.setItem('userId', incomingUserId.toString());
-        } else {
-          localStorage.setItem('userId', '3');
-        }
+      next: (res) => {
+
+        // Store userId so the entire app knows who is logged in
+        localStorage.setItem('userId', res.userId);
+
+        // Navigate to /trades
         this.router.navigate(['/trades']);
       },
-      error: () => {
-        alert('Login failed! Check username/password');
+      error: (err) => {
+        console.error('Login failed', err);
+        alert('Invalid username or password');
       }
     });
   }

@@ -8,11 +8,13 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:8080/api/auth';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(username: string, password: string) {
-    const body = { username, password };
-    return this.http.post<any>(`${this.baseUrl}/login`, body);
+    return this.http.post<any>('http://localhost:8080/api/auth/login', {
+      username,
+      password
+    });
   }
 
   register(username: string, password: string) {

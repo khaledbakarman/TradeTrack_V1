@@ -255,3 +255,30 @@ Common notes:
 - **Routing Updates**
   - Added routes for `add-trade` and `analytics` in `AppRoutingModule`.
   - Integrated `NavbarComponent` into `AppComponent` template.
+
+## 22) 2025-11-27 — Add Trade Page Implementation
+
+- **Add Trade Component**
+  - Implemented `AddTradeComponent` with a form for Symbol, Entry Price, Exit Price, and Notes.
+  - Added validation to ensure required fields are filled.
+  - Calculates `profitLoss` automatically before sending to backend.
+  - Uses `TradeService.addTrade()` to POST data to the API.
+  - Redirects to `/trades` upon successful creation.
+
+- **Service Updates**
+  - Added `addTrade(trade: any)` method to `TradeService` to handle POST requests.
+
+- **Routing**
+  - Confirmed `/add-trade` route is active and linked from the Navbar.
+
+## 23) 2025-11-27 — Real Login API Connection
+
+- **Auth Service**
+  - Updated `AuthService.login()` to strictly return the `Observable` from the backend.
+
+- **Login Component**
+  - Renamed `login()` to `submit()` for clarity.
+  - Removed hardcoded `userId` fallback.
+  - Now stores the real `userId` from the backend response into `localStorage`.
+  - Redirects to `/trades` immediately after successful login.
+  - Updated template to call `submit()` on button click.
