@@ -282,3 +282,15 @@ Common notes:
   - Now stores the real `userId` from the backend response into `localStorage`.
   - Redirects to `/trades` immediately after successful login.
   - Updated template to call `submit()` on button click.
+
+## 24) 2025-11-28 — Auth Guard Implementation
+
+- **Auth Guard**
+  - Created `AuthGuard` (`src/app/guards/auth.guard.ts`) implementing `CanActivate`.
+  - Checks for `userId` in `localStorage`.
+  - Returns `true` if user is logged in.
+  - Redirects to `/login` and returns `false` if not logged in.
+
+- **Route Protection**
+  - Applied `canActivate: [AuthGuard]` to `/trades`, `/add-trade`, and `/analytics` routes in `AppRoutingModule`.
+  - Ensures users cannot access these pages without logging in first.

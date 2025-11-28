@@ -6,12 +6,14 @@ import { TradeListComponent } from './components/trade-list/trade-list.component
 import { AddTradeComponent } from './components/add-trade/add-trade.component';
 import { AnalyticsComponent } from './components/analytics/analytics.component';
 
+import { AuthGuard } from './guards/auth.guard';
+
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'trades', component: TradeListComponent },
-  { path: 'add-trade', component: AddTradeComponent },
-  { path: 'analytics', component: AnalyticsComponent },
+  { path: 'trades', component: TradeListComponent, canActivate: [AuthGuard] },
+  { path: 'add-trade', component: AddTradeComponent, canActivate: [AuthGuard] },
+  { path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
