@@ -12,6 +12,7 @@ import { TradeListComponent } from './components/trade-list/trade-list.component
 import { AddTradeComponent } from './components/add-trade/add-trade.component';
 import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { EditTradeComponent } from './components/edit-trade/edit-trade.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     TradeListComponent,
     AddTradeComponent,
     AnalyticsComponent,
-    NavbarComponent
+    NavbarComponent,
+    EditTradeComponent
   ],
   imports: [
     BrowserModule,

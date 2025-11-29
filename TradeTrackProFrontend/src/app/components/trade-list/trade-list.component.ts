@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TradeService } from '../../services/trade.service';
 import { Trade } from '../../models/trade.model';
 
@@ -11,35 +12,35 @@ export class TradeListComponent implements OnInit {
 
   trades: Trade[] = [];
 
-  constructor(private tradeService: TradeService) { }
+  constructor(private tradeService: TradeService, private router: Router) { }
 
   ngOnInit(): void {
     console.log("TradeListComponent loaded");
     this.loadTrades();
   }
 
-
-  private loadTrades(): void {
-    const userId = this.resolveUserId();
-    console.log(`[TradeListComponent] Requesting trades for userId: ${userId}`);
-
+  loadTrades(): void {
+    const userId = Number(localStorage.getItem('userId'));
     this.tradeService.getTrades(userId).subscribe({
       next: (data: Trade[]) => {
-        console.log('[TradeListComponent] Trades received:', data);
         this.trades = data;
       },
-      error: (err) => {
-        console.error('Error fetching trades:', err);
-      }
+      error: (err) => console.error('Error loading trades', err)
     });
   }
 
-  private resolveUserId(): number {
-    const storedUserId = localStorage.getItem('userId');
-    const parsedUserId = storedUserId ? Number(storedUserId) : NaN;
-    const normalizedUserId = Number.isFinite(parsedUserId) && parsedUserId > 0 ? parsedUserId : 3;
+  editTrade(id: number): void {
+    this.router.navigate(['/edit-trade', id]);
+  }
 
-    localStorage.setItem('userId', normalizedUserId.toString());
-    return normalizedUserId;
+  deleteTrade(id: number): void {
+    if (!confirm('Are you sure you want to delete this trade?')) return;
+
+    this.tradeService.deleteTrade(id).subscribe({
+      next: () => {
+        this.trades = this.trades.filter(t => t.id !== id);
+      },
+      error: (err) => console.error('Delete failed', err)
+    });
   }
 }

@@ -20,7 +20,12 @@
           {{ trade.profitLoss | number:'1.2-2' }}
         </span>
       </p>
-      <p><strong>Notes:</strong> {{ trade.notes || 'None' }}</p>
+      <p class="notes" *ngIf="trade.notes">📝 {{ trade.notes }}</p>
+    </div>
+
+    <div class="actions">
+      <button class="edit-btn" (click)="editTrade(trade.id)">Edit</button>
+      <button class="delete-btn" (click)="deleteTrade(trade.id)">Delete</button>
     </div>
   </div>
 </div>

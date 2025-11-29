@@ -13,8 +13,8 @@ export class TradeService {
 
   constructor(private http: HttpClient) { }
 
-  getTrades(userId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}?userId=${userId}`).pipe(
+  getTrades(userId: number): Observable<Trade[]> {
+    return this.http.get<Trade[]>(`${this.apiUrl}?userId=${userId}`).pipe(
       tap({
         next: (data) => console.log('Trades loaded:', data.length),
         error: (err) => console.error('Failed to load trades:', err)
@@ -25,6 +25,14 @@ export class TradeService {
   addTrade(trade: any): Observable<any> {
     // backend expects a trade payload including userId
     return this.http.post<any>(this.apiUrl, trade);
+  }
+
+  deleteTrade(tradeId: number) {
+    return this.http.delete(`${this.apiUrl}/${tradeId}`);
+  }
+
+  updateTrade(tradeId: number, payload: any) {
+    return this.http.put(`${this.apiUrl}/${tradeId}`, payload);
   }
 
 }

@@ -294,3 +294,45 @@ Common notes:
 - **Route Protection**
   - Applied `canActivate: [AuthGuard]` to `/trades`, `/add-trade`, and `/analytics` routes in `AppRoutingModule`.
   - Ensures users cannot access these pages without logging in first.
+  - Ensures users cannot access these pages without logging in first.
+
+## 25) 2025-11-29 — Analytics Page Implementation
+
+- **Analytics Component**
+  - Implemented `AnalyticsComponent` to fetch trades and calculate key metrics.
+  - Metrics: Total Trades, Wins, Losses, Win Rate (%), Total Profit/Loss.
+  - Created a responsive grid layout for the dashboard using CSS Grid.
+  - Added conditional styling (Green for profit/wins, Red for losses).
+
+- **Logic**
+  - `calculateStats()` processes the trade list to derive insights dynamically.
+  - Handles zero-trade cases gracefully (e.g., 0% win rate).
+
+- **Routing**
+  - Confirmed `/analytics` route is protected by `AuthGuard`.
+
+## 26) 2025-11-29 — Edit & Delete Trade Implementation
+
+- **Trade Service**
+  - Added `deleteTrade(id)` and `updateTrade(id, payload)` methods.
+
+- **Trade List**
+  - Added "Edit" and "Delete" buttons to each trade card.
+  - Implemented `deleteTrade()` with a confirmation dialog.
+  - Implemented `editTrade()` to navigate to the edit page.
+
+- **Edit Trade Component**
+  - Generated `EditTradeComponent` and added route `/edit-trade/:id`.
+  - Implemented logic to fetch existing trade data and populate the form.
+  - Implemented `save()` method to update the trade via API.
+  - Added styles for the edit form.
+
+## 27) 2025-11-29 — Bug Fix: Angular Compile Error
+
+- **Issue**
+  - `trade.id` was typed as `number | undefined` in the model, causing compile errors in `trade-list.component.html` when passing it to functions expecting `number`.
+
+- **Fix**
+  - Updated `Trade` model (`src/app/models/trade.model.ts`) to make `id` mandatory (`id: number`).
+  - Updated `TradeService.getTrades()` to return `Observable<Trade[]>` for strict typing.
+  - This resolves the error and ensures type safety across the application.

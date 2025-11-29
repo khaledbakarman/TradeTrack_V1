@@ -1,0 +1,17 @@
+<div class="edit-container">
+    <h2>Edit Trade</h2>
+
+    <label>Symbol</label>
+    <input [(ngModel)]="symbol" />
+
+    <label>Entry Price</label>
+    <input type="number" [(ngModel)]="entryPrice" />
+
+    <label>Exit Price</label>
+    <input type="number" [(ngModel)]="exitPrice" />
+
+    <label>Notes</label>
+    <textarea rows="3" [(ngModel)]="notes"></textarea>
+
+    <button (click)="save()">Save Changes</button>
+</div>

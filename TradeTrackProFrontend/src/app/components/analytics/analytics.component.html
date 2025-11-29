@@ -1,1 +1,32 @@
-<p>analytics works!</p>
+<div class="analytics-container">
+    <h2>Your Trading Analytics</h2>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Trades</h3>
+            <p>{{ totalTrades }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Wins</h3>
+            <p class="green">{{ wins }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Losses</h3>
+            <p class="red">{{ losses }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Win Rate</h3>
+            <p>{{ winRate }}%</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Profit</h3>
+            <p [ngClass]="totalProfit >= 0 ? 'green' : 'red'">
+                {{ totalProfit }}
+            </p>
+        </div>
+    </div>
+</div>
