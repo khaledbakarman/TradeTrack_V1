@@ -336,3 +336,26 @@ Common notes:
   - Updated `Trade` model (`src/app/models/trade.model.ts`) to make `id` mandatory (`id: number`).
   - Updated `TradeService.getTrades()` to return `Observable<Trade[]>` for strict typing.
   - This resolves the error and ensures type safety across the application.
+
+## 28) 2025-12-01 — Visual Analytics (Charts)
+
+- **Dependencies**
+  - Installed `chart.js`, `ng2-charts@5`, and `@angular/cdk@16`.
+  - Imported `NgChartsModule` in `AppModule`.
+
+- **Analytics Component**
+  - Added **Win/Loss Bar Chart**: Visualizes the count of winning vs. losing trades.
+  - Added **Equity Curve (Line Chart)**: Tracks the cumulative profit/loss over time.
+  - Implemented logic in `calculateStats()` to dynamically update chart data based on loaded trades.
+  - Added CSS Flexbox styling to display charts side-by-side.
+
+## 29) 2025-12-01 — Chart Data Fix
+
+- **Issue**
+  - Charts were displaying incorrect data order and counts because trades were not sorted.
+  - Win/Loss chart was not updating correctly.
+
+- **Fix**
+  - Updated `calculateStats()` to sort trades by ID (`this.trades.sort((a, b) => a.id - b.id)`).
+  - Re-implemented Equity Curve logic to push cumulative profit and labels in sync.
+  - Fixed Win/Loss chart dataset assignment to ensure correct counts and colors.

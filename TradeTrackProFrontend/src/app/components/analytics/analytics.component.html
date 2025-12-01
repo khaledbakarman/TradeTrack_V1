@@ -29,4 +29,22 @@
             </p>
         </div>
     </div>
+
+    <h2>Charts</h2>
+
+    <div class="chart-section">
+
+        <div class="chart-box">
+            <h3>Win / Loss Chart</h3>
+            <canvas baseChart [data]="winLossData" [labels]="winLossLabels" [type]="'bar'">
+            </canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>Equity Curve</h3>
+            <canvas baseChart [data]="equityData" [labels]="equityLabels" [type]="'line'">
+            </canvas>
+        </div>
+
+    </div>
 </div>
