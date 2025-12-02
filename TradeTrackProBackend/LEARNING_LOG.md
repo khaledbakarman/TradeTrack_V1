@@ -360,89 +360,41 @@ Common notes:
   - Re-implemented Equity Curve logic to push cumulative profit and labels in sync.
   - Fixed Win/Loss chart dataset assignment to ensure correct counts and colors.
 
-## 30) 2025-12-02 — JWT Authentication (Backend)
+## 30) 2025-12-02 — Work Summary
 
-- **Dependencies**
-  - Added `jjwt-api`, `jjwt-impl`, and `jjwt-jackson` to `pom.xml`.
+- **JWT Authentication (Backend)**
+  - **Dependencies**: Added `jjwt-api`, `jjwt-impl`, and `jjwt-jackson` to `pom.xml`.
+  - **Security Components**:
+    - Created `JwtUtil`: Handles token generation (signing) and validation (claims extraction).
+    - Created `JwtFilter`: Intercepts requests, extracts JWT from `Authorization` header, and sets `userId` in request attribute.
+    - Updated `WebConfig`: Registered `JwtFilter` to protect `/api/trades/*` endpoints.
+  - **Controller Updates**:
+    - **UserController**: Updated `/login` to validate credentials and return a JWT token.
+    - **TradeController**: Updated `getTrades` (and `createTrade`) to retrieve `userId` securely from the request attribute instead of request parameters.
+    - **UserService**: Added `validateUser` method to support the new login flow.
 
-- **Security Components**
-  - Created `JwtUtil`: Handles token generation (signing) and validation (claims extraction).
-  - Created `JwtFilter`: Intercepts requests, extracts JWT from `Authorization` header, and sets `userId` in request attribute.
-  - Updated `WebConfig`: Registered `JwtFilter` to protect `/api/trades/*` endpoints.
+- **JWT Authentication (Frontend)**
+  - **Login Flow**:
+    - Updated `LoginComponent` to store the JWT token in `localStorage` upon successful login.
+    - Updated `AuthService` to call the correct login endpoint.
+  - **Token Interceptor**:
+    - Created `TokenInterceptor` to automatically attach the JWT token (Bearer token) to the `Authorization` header of every outgoing HTTP request.
+    - Registered the interceptor in `AppModule`.
+  - **Service & Component Updates**:
+    - Updated `TradeService.getTrades()` to remove the `userId` parameter, as the backend now identifies the user via the token.
+    - Updated `TradeListComponent` and `AnalyticsComponent` to call `getTrades()` without arguments.
+    - Removed manual `userId` handling from frontend components.
 
-- **Controller Updates**
-  - **UserController**: Updated `/login` to validate credentials and return a JWT token.
-  - **TradeController**: Updated `getTrades` (and `createTrade`) to retrieve `userId` securely from the request attribute instead of request parameters.
-  - **UserService**: Added `validateUser` method to support the new login flow.
+- **Bug Fixes & Stability**
+  - **Backend Compilation**: Restored missing package declaration and imports in `UserController.java`.
+  - **Bean Conflict**: Renamed `jwtFilter` bean in `WebConfig` to avoid conflict with the class name.
+  - **Frontend Compilation**: Updated `EditTradeComponent` and `AddTradeComponent` to match the new `TradeService` signature (no `userId`).
+  - **Edit Trade Save**: Fixed `TradeController.updateTrade()` to inject `userId` from the token, allowing updates to succeed without frontend payload changes.
+  - **Login Loop**: Updated `AuthGuard` to check for `token` instead of `userId`, fixing the immediate redirect issue.
 
-## 31) 2025-12-02 — JWT Authentication (Frontend)
-
-- **Login Flow**
-  - Updated `LoginComponent` to store the JWT token in `localStorage` upon successful login.
-  - Updated `AuthService` to call the correct login endpoint.
-
-- **Token Interceptor**
-  - Created `TokenInterceptor` to automatically attach the JWT token (Bearer token) to the `Authorization` header of every outgoing HTTP request.
-  - Registered the interceptor in `AppModule`.
-
-- **Service & Component Updates**
-  - Updated `TradeService.getTrades()` to remove the `userId` parameter, as the backend now identifies the user via the token.
-  - Updated `TradeListComponent` and `AnalyticsComponent` to call `getTrades()` without arguments.
-  - Removed manual `userId` handling from frontend components.
-
-## 32) 2025-12-02 — Backend Fixes
-
-- **Compilation Error**
-  - **Issue**: `UserController.java` was missing package declaration and imports after the JWT update.
-  - **Fix**: Restored `package com.tradetrackpro.controller;` and all required imports (`RestController`, `UserService`, `JwtUtil`, etc.).
-
-- **Runtime Error**
-  - **Issue**: `BeanDefinitionOverrideException` because `JwtFilter` (annotated with `@Component`) and the `@Bean` method `jwtFilter()` in `WebConfig` had the same name.
-  - **Fix**: Renamed the `@Bean` method in `WebConfig` to `jwtFilterRegistration()` to avoid the conflict.
-  - **Result**: Backend now starts successfully on port 8080.
-
-## 33) 2025-12-02 — Frontend Fixes
-
-- **Compilation Error**
-  - **Issue**: `EditTradeComponent` was still passing `userId` to `tradeService.getTrades()`, but the method signature was changed to accept no arguments.
-  - **Fix**: Updated `EditTradeComponent` to call `getTrades()` without arguments.
-  - **Cleanup**: Also updated `AddTradeComponent` to remove `userId` from the payload, as the backend now extracts it from the token.
-
-## 34) 2025-12-02 — Bug Fix: Edit Trade Save Failed
-
-- **Issue**
-  - "Save Changes" in Edit Trade was failing because `TradeService.updateTrade()` requires `userId` in the payload (validation check), but the frontend no longer sends it.
-  - `TradeController.updateTrade()` was not injecting the `userId` from the token like `createTrade()` does.
-
-- **Fix**
-  - Updated `TradeController.updateTrade()` to accept `HttpServletRequest`.
-  - Extracted `userId` from the request attribute (set by `JwtFilter`) and injected it into the `TradeRequest` object before calling the service.
-  - This ensures the backend validation passes and the trade is updated correctly.
-
-## 35) 2025-12-02 — Bug Fix: Login Loop
-
-- **Issue**
-  - User could log in (backend returned 200 OK), but was immediately redirected back to the login page.
-  - **Cause**: `AuthGuard` was still checking for `userId` in `localStorage`, but the new JWT flow only stores `token`. Since `userId` was missing, the guard blocked access to `/trades`.
-
-- **Fix**
-  - Updated `AuthGuard` to check for `token` instead of `userId`.
-  - Updated `NavbarComponent` to clear `token` on logout.
-  - **Result**: Login now successfully redirects to the dashboard.
-
-## 36) 2025-12-02 — Day Summary
-
-- **Achievement Unlocked: Full JWT Authentication** 🔒
-  - Replaced the temporary "userId in localStorage" approach with industry-standard **JSON Web Tokens (JWT)**.
-  - **Backend**: Generates tokens on login, validates them via filter, and securely identifies users from the token claims.
-  - **Frontend**: Stores the token and automatically attaches it to every API request using an HTTP Interceptor.
-  - **Security**: API endpoints are now protected; users can only access their own data.
-
-- **Stability Improvements**
-  - Fixed multiple bugs including compilation errors, bean conflicts, and logic issues in `AuthGuard` and `TradeController`.
-  - The application is now robust, secure, and ready for further feature development.
-
-- **Next Steps**
-  - Advanced Trade Filtering (by date, symbol, outcome).
-  - User Profile / Settings page.
-  - Deployment (Docker/Cloud).
+- **Day Summary**
+  - **Achievement Unlocked: Full JWT Authentication** 🔒
+    - Replaced temporary "userId in localStorage" with secure JWTs.
+    - Backend generates and validates tokens; Frontend attaches them to requests.
+    - API endpoints are now protected.
+  - **Next Steps**: Advanced Trade Filtering, User Profile, Deployment.
