@@ -16,14 +16,12 @@ export class AddTradeComponent {
   constructor(private tradeService: TradeService, private router: Router) { }
 
   submit() {
-    const userId = Number(localStorage.getItem('userId')) || 3; // temporary fallback
     if (!this.symbol || this.entryPrice == null || this.exitPrice == null) {
       alert('Please fill symbol, entry and exit prices.');
       return;
     }
 
     const payload = {
-      userId,
       symbol: this.symbol.trim().toUpperCase(),
       entryPrice: Number(this.entryPrice),
       exitPrice: Number(this.exitPrice),

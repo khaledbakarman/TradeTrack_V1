@@ -13,8 +13,8 @@ export class TradeService {
 
   constructor(private http: HttpClient) { }
 
-  getTrades(userId: number): Observable<Trade[]> {
-    return this.http.get<Trade[]>(`${this.apiUrl}?userId=${userId}`).pipe(
+  getTrades(): Observable<Trade[]> {
+    return this.http.get<Trade[]>(this.apiUrl).pipe(
       tap({
         next: (data) => console.log('Trades loaded:', data.length),
         error: (err) => console.error('Failed to load trades:', err)

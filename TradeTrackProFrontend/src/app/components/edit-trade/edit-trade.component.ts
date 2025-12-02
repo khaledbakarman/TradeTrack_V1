@@ -27,9 +27,7 @@ export class EditTradeComponent implements OnInit {
   ngOnInit(): void {
     this.tradeId = Number(this.route.snapshot.paramMap.get('id'));
 
-    const userId = Number(localStorage.getItem('userId'));
-
-    this.tradeService.getTrades(userId).subscribe(trades => {
+    this.tradeService.getTrades().subscribe(trades => {
       const t = trades.find(tr => tr.id === this.tradeId);
       if (t) {
         this.trade = t;
@@ -44,7 +42,6 @@ export class EditTradeComponent implements OnInit {
 
   save() {
     const payload = {
-      userId: Number(localStorage.getItem('userId')),
       symbol: this.symbol,
       entryPrice: this.entryPrice,
       exitPrice: this.exitPrice,

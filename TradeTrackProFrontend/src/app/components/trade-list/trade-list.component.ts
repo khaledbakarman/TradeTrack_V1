@@ -20,8 +20,7 @@ export class TradeListComponent implements OnInit {
   }
 
   loadTrades(): void {
-    const userId = Number(localStorage.getItem('userId'));
-    this.tradeService.getTrades(userId).subscribe({
+    this.tradeService.getTrades().subscribe({
       next: (data: Trade[]) => {
         this.trades = data;
       },

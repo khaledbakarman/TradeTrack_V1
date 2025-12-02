@@ -16,7 +16,7 @@ A trading backend application built with Java, Spring Boot, and MySQL.
 
 ## 🧠 How to Run
 1. Clone the repository  
-   `ash
+   `bash
    git clone https://github.com/khaledbakarman/TradeTrack_V1.git
    `
 2. Configure your MySQL database in application.properties.

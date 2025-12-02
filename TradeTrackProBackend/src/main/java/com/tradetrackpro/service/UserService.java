@@ -31,13 +31,16 @@ public class UserService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
-
-        if (!user.getPassword().equals(request.getPassword())) {
+        User user = validateUser(request.getUsername(), request.getPassword());
+        if (user == null) {
             throw new IllegalArgumentException("Invalid username or password");
         }
-
         return new AuthResponse(user.getId(), "Login successful");
+    }
+
+    public User validateUser(String username, String password) {
+        return userRepository.findByUsername(username)
+                .filter(u -> u.getPassword().equals(password))
+                .orElse(null);
     }
 }

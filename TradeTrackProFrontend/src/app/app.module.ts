@@ -15,6 +15,9 @@ import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { EditTradeComponent } from './components/edit-trade/edit-trade.component';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './auth/token.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +36,13 @@ import { EditTradeComponent } from './components/edit-trade/edit-trade.component
     FormsModule,
     NgChartsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -14,6 +14,8 @@ com\tradetrackpro\TradeTrackProBackendApplication.class
 com\tradetrackpro\dto\TradeResponse$TradeResponseBuilder.class
 com\tradetrackpro\model\User.class
 com\tradetrackpro\repository\TradeRepository.class
+com\tradetrackpro\security\JwtFilter.class
 com\tradetrackpro\service\TradeService.class
 com\tradetrackpro\dto\LoginRequest.class
 com\tradetrackpro\config\WebConfig$1.class
+com\tradetrackpro\security\JwtUtil.class

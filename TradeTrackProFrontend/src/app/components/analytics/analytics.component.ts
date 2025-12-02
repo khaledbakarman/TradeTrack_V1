@@ -48,9 +48,7 @@ export class AnalyticsComponent implements OnInit {
   constructor(private tradeService: TradeService) { }
 
   ngOnInit(): void {
-    const userId = Number(localStorage.getItem('userId'));
-
-    this.tradeService.getTrades(userId).subscribe({
+    this.tradeService.getTrades().subscribe({
       next: (data) => {
         this.trades = data;
         this.calculateStats();

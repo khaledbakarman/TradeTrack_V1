@@ -11,7 +11,7 @@ export class NavbarComponent {
   constructor(private router: Router) { }
 
   logout() {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 

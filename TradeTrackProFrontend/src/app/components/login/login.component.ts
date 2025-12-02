@@ -16,18 +16,11 @@ export class LoginComponent {
 
   submit() {
     this.authService.login(this.username, this.password).subscribe({
-      next: (res) => {
-
-        // Store userId so the entire app knows who is logged in
-        localStorage.setItem('userId', res.userId);
-
-        // Navigate to /trades
+      next: (res: any) => {
+        localStorage.setItem("token", res.token);
         this.router.navigate(['/trades']);
       },
-      error: (err) => {
-        console.error('Login failed', err);
-        alert('Invalid username or password');
-      }
+      error: () => alert("Login failed")
     });
   }
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/trades")
 @RequiredArgsConstructor
@@ -19,8 +21,12 @@ public class TradeController {
 
     // Handles POST /api/trades to create a new trade linked to a user
     @PostMapping
-    public ResponseEntity<?> createTrade(@Valid @RequestBody TradeRequest request) {
+    public ResponseEntity<?> createTrade(@Valid @RequestBody TradeRequest request, HttpServletRequest httpServletRequest) {
         try {
+            Long userId = (Long) httpServletRequest.getAttribute("userId");
+            if (userId != null) {
+                 request.setUserId(userId);
+            }
             TradeResponse response = tradeService.createTrade(request);
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException ex) {
@@ -30,8 +36,9 @@ public class TradeController {
 
     // Handles GET /api/trades?userId=... to return all trades for the specified user
     @GetMapping
-    public ResponseEntity<?> getTradesByUser(@RequestParam Long userId) {
+    public ResponseEntity<?> getTradesByUser(HttpServletRequest request) {
         try {
+            Long userId = (Long) request.getAttribute("userId");
             List<TradeResponse> trades = tradeService.getTradesByUser(userId);
             return ResponseEntity.ok(trades);
         } catch (IllegalArgumentException ex) {
@@ -51,10 +58,16 @@ public class TradeController {
     }
 
     // Handles PUT /api/trades/{id} to update an existing trade
+    // Handles PUT /api/trades/{id} to update an existing trade
     @PutMapping("/{id}")
     public ResponseEntity<?> updateTrade(@PathVariable Long id,
-                                         @Valid @RequestBody TradeRequest request) {
+                                         @Valid @RequestBody TradeRequest request,
+                                         HttpServletRequest httpServletRequest) {
         try {
+            Long userId = (Long) httpServletRequest.getAttribute("userId");
+            if (userId != null) {
+                request.setUserId(userId);
+            }
             TradeResponse response = tradeService.updateTrade(id, request);
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException ex) {
