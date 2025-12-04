@@ -20,7 +20,7 @@
   </div>
 
   <div class="trade-grid">
-    <div class="trade-card" *ngFor="let trade of filteredTrades">
+    <div class="trade-card" *ngFor="let trade of paginatedTrades">
       <div class="trade-header">
         <span class="symbol">{{ trade.symbol }}</span>
         <span class="entry-exit">
@@ -46,5 +46,13 @@
         <button class="delete-btn" (click)="deleteTrade(trade.id!)">Delete</button>
       </div>
     </div>
+  </div>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+    <button *ngFor="let page of totalPagesArray" [class.active]="page === currentPage" (click)="goToPage(page)">
+      {{ page }}
+    </button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
   </div>
 </div>

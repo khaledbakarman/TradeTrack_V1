@@ -17,6 +17,11 @@ export class TradeListComponent implements OnInit {
   endDate: string | null = null;
   selectedOutcome: string = 'All';
 
+  currentPage: number = 1;
+  pageSize: number = 12;
+  totalPages: number = 0;
+  totalPagesArray: number[] = [];
+
   constructor(private tradeService: TradeService, private router: Router) { }
 
   ngOnInit(): void {
@@ -28,6 +33,7 @@ export class TradeListComponent implements OnInit {
       next: (data: Trade[]) => {
         this.trades = data.sort((a, b) => b.id - a.id);
         this.filteredTrades = [...this.trades];
+        this.calculatePagination();
         console.log('Loaded trades:', this.trades.length);
       },
       error: (err) => console.error(err)
@@ -42,6 +48,8 @@ export class TradeListComponent implements OnInit {
 
       return matchesStart && matchesEnd && matchesOutcome;
     });
+    this.currentPage = 1;
+    this.calculatePagination();
   }
 
   clearFilters() {
@@ -49,6 +57,34 @@ export class TradeListComponent implements OnInit {
     this.endDate = null;
     this.selectedOutcome = 'All';
     this.filteredTrades = [...this.trades];
+    this.currentPage = 1;
+    this.calculatePagination();
+  }
+
+  calculatePagination() {
+    this.totalPages = Math.ceil(this.filteredTrades.length / this.pageSize);
+    this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  get paginatedTrades() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredTrades.slice(start, start + this.pageSize);
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
   }
 
   editTrade(id: number): void {
