@@ -27,16 +27,13 @@ export class EditTradeComponent implements OnInit {
   ngOnInit(): void {
     this.tradeId = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.tradeService.getTrades().subscribe(trades => {
-      const t = trades.find(tr => tr.id === this.tradeId);
-      if (t) {
-        this.trade = t;
+    this.tradeService.getTradeById(this.tradeId).subscribe(t => {
+      this.trade = t;
 
-        this.symbol = t.symbol;
-        this.entryPrice = t.entryPrice;
-        this.exitPrice = t.exitPrice;
-        this.notes = t.notes;
-      }
+      this.symbol = t.symbol;
+      this.entryPrice = t.entryPrice;
+      this.exitPrice = t.exitPrice;
+      this.notes = t.notes;
     });
   }
 

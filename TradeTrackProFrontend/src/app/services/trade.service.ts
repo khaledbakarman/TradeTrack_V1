@@ -13,8 +13,9 @@ export class TradeService {
 
   constructor(private http: HttpClient) { }
 
-  getTrades(): Observable<Trade[]> {
-    return this.http.get<Trade[]>(this.apiUrl).pipe(
+  getTrades(): Observable<any> {
+    // Backend gets userId from the JWT token automatically
+    return this.http.get<any>(this.apiUrl).pipe(
       tap({
         next: (data) => console.log('Trades loaded:', data.length),
         error: (err) => console.error('Failed to load trades:', err)
@@ -33,6 +34,10 @@ export class TradeService {
 
   updateTrade(tradeId: number, payload: any) {
     return this.http.put(`${this.apiUrl}/${tradeId}`, payload);
+  }
+
+  getTradeById(id: number): Observable<Trade> {
+    return this.http.get<Trade>(`${this.apiUrl}/${id}`);
   }
 
 }

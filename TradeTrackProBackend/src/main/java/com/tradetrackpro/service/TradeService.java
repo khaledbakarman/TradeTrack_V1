@@ -51,6 +51,10 @@ public class TradeService {
                 .collect(Collectors.toList());
     }
 
+    public org.springframework.data.domain.Page<Trade> getFilteredTrades(Long userId, String symbol, java.time.LocalDate startDate, java.time.LocalDate endDate, String result, org.springframework.data.domain.Pageable pageable) {
+         return tradeRepository.filterTrades(userId, symbol, startDate, endDate, result, pageable);
+    }
+
     // Returns a single trade by id or throws if it does not exist
     public TradeResponse getTradeById(Long tradeId) {
         Trade trade = tradeRepository.findById(tradeId)

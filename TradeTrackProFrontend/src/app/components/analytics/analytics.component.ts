@@ -48,6 +48,7 @@ export class AnalyticsComponent implements OnInit {
   constructor(private tradeService: TradeService) { }
 
   ngOnInit(): void {
+    // Fetch all trades for analytics
     this.tradeService.getTrades().subscribe({
       next: (data) => {
         this.trades = data;

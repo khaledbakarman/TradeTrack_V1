@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
+import com.tradetrackpro.model.Trade;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/trades")
@@ -34,12 +39,17 @@ public class TradeController {
         }
     }
 
-    // Handles GET /api/trades?userId=... to return all trades for the specified user
+
+
+    // Handles GET /api/trades to return all trades for the authenticated user
     @GetMapping
     public ResponseEntity<?> getTradesByUser(HttpServletRequest request) {
         try {
             Long userId = (Long) request.getAttribute("userId");
+            System.out.println("getTradesByUser - userId: " + userId);
+            
             List<TradeResponse> trades = tradeService.getTradesByUser(userId);
+            System.out.println("Found trades: " + trades.size());
             return ResponseEntity.ok(trades);
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

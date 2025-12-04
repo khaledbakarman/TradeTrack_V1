@@ -398,3 +398,31 @@ Common notes:
     - Backend generates and validates tokens; Frontend attaches them to requests.
     - API endpoints are now protected.
   - **Next Steps**: Advanced Trade Filtering, User Profile, Deployment.
+
+## 31) 2025-12-03 — Work Summary
+
+- **Debugging "Empty Trade List"**
+  - **Issue**: Trades were not appearing despite being added.
+  - **Root Cause 1 (Backend)**: `JwtUtil` was generating a random secret key on every restart, causing token signature mismatches.
+    - **Fix**: Implemented a persistent secret key in `JwtUtil`.
+  - **Root Cause 2 (Frontend)**: Filter inputs (Symbol, Result) were sending empty strings (`""`), which the backend treated as literal search values.
+    - **Fix**: Updated `TradeController` to convert empty strings to `null`.
+  - **Root Cause 3 (Missing Data)**: `AddTradeComponent` was not sending `tradeDate`, causing new trades to have null dates.
+    - **Fix**: Updated payload to include `tradeDate` (defaulting to today).
+
+- **Frontend Refactoring**
+  - **Simplified Architecture**: Reverted to a simple "fetch all" strategy to resolve persistent mismatch errors between frontend pagination and backend logic.
+  - **Trade Service**: Removed complex filter parameters; now simply fetches the full list.
+  - **Trade List UI**:
+    - Removed filter inputs and pagination controls.
+    - Added a "Clear" button (during debugging) and then removed it for the final simple view.
+    - Fixed SCSS syntax error (restored missing selectors).
+
+- **Backend Stability**
+  - **Port Conflicts**: Resolved multiple instances of port 8080 being stuck by killing orphan processes.
+  - **Logging**: Added debug logs to `JwtFilter` and `TradeController` to trace request flow.
+
+- **Outcome**
+  - The application now reliably adds, fetches, and displays trades.
+  - Authentication is stable with persistent tokens.
+  - The UI is clean and error-free.

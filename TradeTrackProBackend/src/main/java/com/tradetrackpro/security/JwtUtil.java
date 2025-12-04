@@ -10,7 +10,8 @@ import java.security.Key;
 @Component
 public class JwtUtil {
 
-    private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    // Use a fixed secret key for development (in production, load from properties)
+    private final Key secretKey = Keys.hmacShaKeyFor("MySuperSecretKeyForTradeTrackPro1234567890".getBytes());
     private final long expirationMs = 24 * 60 * 60 * 1000; // 24 hours
 
     public String generateToken(Long userId, String username) {

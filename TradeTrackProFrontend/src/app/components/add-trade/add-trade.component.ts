@@ -26,7 +26,8 @@ export class AddTradeComponent {
       entryPrice: Number(this.entryPrice),
       exitPrice: Number(this.exitPrice),
       profitLoss: Number((Number(this.exitPrice) - Number(this.entryPrice)).toFixed(2)),
-      notes: this.notes
+      notes: this.notes,
+      tradeDate: new Date().toISOString().split('T')[0] // Default to today
     };
 
     this.tradeService.addTrade(payload).subscribe({

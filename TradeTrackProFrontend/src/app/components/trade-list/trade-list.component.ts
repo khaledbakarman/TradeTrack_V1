@@ -15,16 +15,16 @@ export class TradeListComponent implements OnInit {
   constructor(private tradeService: TradeService, private router: Router) { }
 
   ngOnInit(): void {
-    console.log("TradeListComponent loaded");
     this.loadTrades();
   }
 
-  loadTrades(): void {
+  loadTrades() {
     this.tradeService.getTrades().subscribe({
-      next: (data: Trade[]) => {
+      next: (data) => {
         this.trades = data;
+        console.log('Loaded trades:', this.trades.length);
       },
-      error: (err) => console.error('Error loading trades', err)
+      error: (err) => console.error(err)
     });
   }
 
@@ -37,7 +37,7 @@ export class TradeListComponent implements OnInit {
 
     this.tradeService.deleteTrade(id).subscribe({
       next: () => {
-        this.trades = this.trades.filter(t => t.id !== id);
+        this.loadTrades(); // Reload to refresh list and pagination
       },
       error: (err) => console.error('Delete failed', err)
     });
