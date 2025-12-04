@@ -14,7 +14,7 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  submit() {
+  onLogin() {
     this.authService.login(this.username, this.password).subscribe({
       next: (res: any) => {
         localStorage.setItem("token", res.token);
