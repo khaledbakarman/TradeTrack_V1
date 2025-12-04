@@ -11,6 +11,11 @@ import { Trade } from '../../models/trade.model';
 export class TradeListComponent implements OnInit {
 
   trades: Trade[] = [];
+  filteredTrades: Trade[] = [];
+
+  startDate: string | null = null;
+  endDate: string | null = null;
+  selectedOutcome: string = 'All';
 
   constructor(private tradeService: TradeService, private router: Router) { }
 
@@ -22,10 +27,28 @@ export class TradeListComponent implements OnInit {
     this.tradeService.getTrades().subscribe({
       next: (data: Trade[]) => {
         this.trades = data.sort((a, b) => b.id - a.id);
+        this.filteredTrades = [...this.trades];
         console.log('Loaded trades:', this.trades.length);
       },
       error: (err) => console.error(err)
     });
+  }
+
+  applyFilters() {
+    this.filteredTrades = this.trades.filter(trade => {
+      const matchesStart = !this.startDate || trade.tradeDate >= this.startDate;
+      const matchesEnd = !this.endDate || trade.tradeDate <= this.endDate;
+      const matchesOutcome = this.selectedOutcome === 'All' || trade.outcome === this.selectedOutcome;
+
+      return matchesStart && matchesEnd && matchesOutcome;
+    });
+  }
+
+  clearFilters() {
+    this.startDate = null;
+    this.endDate = null;
+    this.selectedOutcome = 'All';
+    this.filteredTrades = [...this.trades];
   }
 
   editTrade(id: number): void {

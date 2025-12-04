@@ -1,12 +1,26 @@
 <div class="trade-list-container">
   <h2>Your Trades</h2>
 
-  <div *ngIf="trades.length === 0" class="no-trades">
+  <div class="filters">
+    <label>Start Date: <input type="date" [(ngModel)]="startDate" (ngModelChange)="applyFilters()"></label>
+    <label>End Date: <input type="date" [(ngModel)]="endDate" (ngModelChange)="applyFilters()"></label>
+    <label>Outcome:
+      <select [(ngModel)]="selectedOutcome" (ngModelChange)="applyFilters()">
+        <option value="All">All</option>
+        <option value="WIN">Win</option>
+        <option value="LOSS">Loss</option>
+        <option value="BREAKEVEN">Breakeven</option>
+      </select>
+    </label>
+    <button (click)="clearFilters()">Clear Filters</button>
+  </div>
+
+  <div *ngIf="filteredTrades.length === 0" class="no-trades">
     No trades found.
   </div>
 
   <div class="trade-grid">
-    <div class="trade-card" *ngFor="let trade of trades">
+    <div class="trade-card" *ngFor="let trade of filteredTrades">
       <div class="trade-header">
         <span class="symbol">{{ trade.symbol }}</span>
         <span class="entry-exit">
