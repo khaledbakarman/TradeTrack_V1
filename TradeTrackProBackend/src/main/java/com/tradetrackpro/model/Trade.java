@@ -33,6 +33,13 @@ public class Trade {
 
     private LocalDate tradeDate;
 
+    @Column(precision = 10, scale = 2)
+    private BigDecimal quantity;
+
+    private String positionType; // BUY or SELL
+
+    private String outcome;      // WIN, LOSS, or BREAKEVEN
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

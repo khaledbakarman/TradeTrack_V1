@@ -34,6 +34,10 @@ public class TradeService {
                 .exitPrice(asBigDecimal(request.getExitPrice()))
                 .profitLoss(asBigDecimal(request.getProfitLoss()))
                 .notes(request.getNotes())
+                .tradeDate(request.getTradeDate())
+                .quantity(asBigDecimal(request.getQuantity()))
+                .positionType(request.getPositionType())
+                .outcome(request.getOutcome())
                 .build();
 
         Trade saved = tradeRepository.save(trade);
@@ -78,15 +82,24 @@ public class TradeService {
         existing.setExitPrice(asBigDecimal(request.getExitPrice()));
         existing.setProfitLoss(asBigDecimal(request.getProfitLoss()));
         existing.setNotes(request.getNotes());
+        existing.setTradeDate(request.getTradeDate());
+        existing.setQuantity(asBigDecimal(request.getQuantity()));
+        existing.setPositionType(request.getPositionType());
+        existing.setOutcome(request.getOutcome());
 
         Trade updated = tradeRepository.save(existing);
         return toResponse(updated);
     }
 
-    // Deletes a trade by id; no response body needed
-    public void deleteTrade(Long tradeId) {
+    // Deletes a trade by id, ensuring it belongs to the specified user
+    public void deleteTrade(Long tradeId, Long userId) {
         Trade trade = tradeRepository.findById(tradeId)
                 .orElseThrow(() -> new IllegalArgumentException("Trade not found"));
+
+        if (!trade.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("You are not authorized to delete this trade");
+        }
+
         tradeRepository.delete(trade);
     }
 
@@ -100,6 +113,9 @@ public class TradeService {
                 .profitLoss(trade.getProfitLoss())
                 .notes(trade.getNotes())
                 .tradeDate(trade.getTradeDate())
+                .quantity(trade.getQuantity())
+                .positionType(trade.getPositionType())
+                .outcome(trade.getOutcome())
                 .build();
     }
 

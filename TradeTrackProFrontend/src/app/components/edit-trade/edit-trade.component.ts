@@ -17,6 +17,10 @@ export class EditTradeComponent implements OnInit {
   entryPrice!: number;
   exitPrice!: number;
   notes = '';
+  tradeDate!: string;
+  quantity!: number;
+  positionType: 'BUY' | 'SELL' = 'BUY';
+  outcome: 'WIN' | 'LOSS' | 'BREAKEVEN' = 'WIN';
 
   constructor(
     private route: ActivatedRoute,
@@ -34,6 +38,10 @@ export class EditTradeComponent implements OnInit {
       this.entryPrice = t.entryPrice;
       this.exitPrice = t.exitPrice;
       this.notes = t.notes;
+      this.tradeDate = t.tradeDate;
+      this.quantity = t.quantity;
+      this.positionType = t.positionType;
+      this.outcome = t.outcome;
     });
   }
 
@@ -43,7 +51,11 @@ export class EditTradeComponent implements OnInit {
       entryPrice: this.entryPrice,
       exitPrice: this.exitPrice,
       profitLoss: Number((this.exitPrice - this.entryPrice).toFixed(2)),
-      notes: this.notes
+      notes: this.notes,
+      tradeDate: this.tradeDate,
+      quantity: this.quantity,
+      positionType: this.positionType,
+      outcome: this.outcome
     };
 
     this.tradeService.updateTrade(this.tradeId, payload).subscribe({

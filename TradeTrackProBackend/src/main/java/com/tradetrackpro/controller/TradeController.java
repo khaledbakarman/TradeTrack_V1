@@ -86,10 +86,14 @@ public class TradeController {
     }
 
     // Handles DELETE /api/trades/{id} to remove a trade permanently
+    // Handles DELETE /api/trades/{id} to remove a trade permanently
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTrade(@PathVariable Long id) {
+    public ResponseEntity<?> deleteTrade(@PathVariable Long id, HttpServletRequest request) {
         try {
-            tradeService.deleteTrade(id);
+            Long userId = (Long) request.getAttribute("userId");
+            System.out.println("Deleting trade " + id + " for user " + userId);
+            
+            tradeService.deleteTrade(id, userId);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

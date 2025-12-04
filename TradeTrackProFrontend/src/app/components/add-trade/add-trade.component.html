@@ -1,14 +1,33 @@
 <div class="add-trade-container">
     <h2>Add Trade</h2>
 
+    <label>Date</label>
+    <input type="date" [(ngModel)]="tradeDate" />
+
     <label>Symbol</label>
     <input type="text" [(ngModel)]="symbol" placeholder="AAPL" />
+
+    <label>Quantity / Lots</label>
+    <input type="number" [(ngModel)]="quantity" placeholder="e.g., 0.50 lots or 100 units" step="0.01" />
+
+    <label>Position Type</label>
+    <select [(ngModel)]="positionType">
+        <option value="BUY">Buy</option>
+        <option value="SELL">Sell</option>
+    </select>
 
     <label>Entry Price</label>
     <input type="number" [(ngModel)]="entryPrice" step="0.01" />
 
     <label>Exit Price</label>
     <input type="number" [(ngModel)]="exitPrice" step="0.01" />
+
+    <label>Outcome</label>
+    <select [(ngModel)]="outcome">
+        <option value="WIN">Win</option>
+        <option value="LOSS">Loss</option>
+        <option value="BREAKEVEN">Breakeven</option>
+    </select>
 
     <label>Notes</label>
     <textarea [(ngModel)]="notes" rows="3" placeholder="Notes"></textarea>

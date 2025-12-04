@@ -6,4 +6,8 @@ export interface Trade {
   profitLoss: number;
   notes: string;
   userId: number;
+  tradeDate: string;
+  quantity: number;
+  positionType: 'BUY' | 'SELL';
+  outcome: 'WIN' | 'LOSS' | 'BREAKEVEN';
 }

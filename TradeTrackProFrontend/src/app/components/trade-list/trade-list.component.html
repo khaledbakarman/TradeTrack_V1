@@ -5,27 +5,32 @@
     No trades found.
   </div>
 
-  <div class="trade-card" *ngFor="let trade of trades">
-    <div class="trade-header">
-      <span class="symbol">{{ trade.symbol }}</span>
-      <span class="entry-exit">
-        {{ trade.entryPrice | number:'1.2-2' }} → {{ trade.exitPrice | number:'1.2-2' }}
-      </span>
-    </div>
-
-    <div class="trade-details">
-      <p>
-        <strong>Profit:</strong>
-        <span [ngClass]="{ 'positive': trade.profitLoss > 0, 'negative': trade.profitLoss < 0 }">
-          {{ trade.profitLoss | number:'1.2-2' }}
+  <div class="trade-grid">
+    <div class="trade-card" *ngFor="let trade of trades">
+      <div class="trade-header">
+        <span class="symbol">{{ trade.symbol }}</span>
+        <span class="entry-exit">
+          {{ trade.entryPrice | number:'1.2-2' }} → {{ trade.exitPrice | number:'1.2-2' }}
         </span>
-      </p>
-      <p class="notes" *ngIf="trade.notes">📝 {{ trade.notes }}</p>
-    </div>
+      </div>
 
-    <div class="actions">
-      <button class="edit-btn" (click)="editTrade(trade.id)">Edit</button>
-      <button class="delete-btn" (click)="deleteTrade(trade.id)">Delete</button>
+      <div class="trade-details">
+        <p><strong>Date:</strong> {{ trade.tradeDate | date:'mediumDate' }}</p>
+        <p><strong>Type:</strong> {{ trade.positionType }} ({{ trade.quantity | number:'1.2-2' }} units/lots)</p>
+        <p>
+          <strong>Profit:</strong>
+          <span [ngClass]="{ 'positive': trade.profitLoss > 0, 'negative': trade.profitLoss < 0 }">
+            {{ trade.profitLoss | number:'1.2-2' }}
+          </span>
+        </p>
+        <p><strong>Outcome:</strong> {{ trade.outcome }}</p>
+        <p class="notes" *ngIf="trade.notes">📝 {{ trade.notes }}</p>
+      </div>
+
+      <div class="actions">
+        <button class="edit-btn" (click)="editTrade(trade.id)">Edit</button>
+        <button class="delete-btn" (click)="deleteTrade(trade.id!)">Delete</button>
+      </div>
     </div>
   </div>
 </div>

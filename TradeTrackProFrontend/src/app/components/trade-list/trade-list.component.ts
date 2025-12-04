@@ -20,8 +20,8 @@ export class TradeListComponent implements OnInit {
 
   loadTrades() {
     this.tradeService.getTrades().subscribe({
-      next: (data) => {
-        this.trades = data;
+      next: (data: Trade[]) => {
+        this.trades = data.sort((a, b) => b.id - a.id);
         console.log('Loaded trades:', this.trades.length);
       },
       error: (err) => console.error(err)
@@ -33,10 +33,13 @@ export class TradeListComponent implements OnInit {
   }
 
   deleteTrade(id: number): void {
+    console.log('Attempting to delete trade:', id);
     if (!confirm('Are you sure you want to delete this trade?')) return;
 
+    console.log('DELETE request sent for ID:', id);
     this.tradeService.deleteTrade(id).subscribe({
       next: () => {
+        console.log('Delete successful, reloading trades...');
         this.loadTrades(); // Reload to refresh list and pagination
       },
       error: (err) => console.error('Delete failed', err)

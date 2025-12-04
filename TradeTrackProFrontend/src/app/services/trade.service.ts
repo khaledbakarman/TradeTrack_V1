@@ -28,8 +28,10 @@ export class TradeService {
     return this.http.post<any>(this.apiUrl, trade);
   }
 
-  deleteTrade(tradeId: number) {
-    return this.http.delete(`${this.apiUrl}/${tradeId}`);
+  deleteTrade(tradeId: number): Observable<any> {
+    const url = `${this.apiUrl}/${tradeId}`;
+    console.log('TradeService: Deleting trade at URL:', url);
+    return this.http.delete(url);
   }
 
   updateTrade(tradeId: number, payload: any) {

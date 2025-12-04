@@ -17,4 +17,7 @@ public class TradeResponse {
     BigDecimal profitLoss;
     String notes;
     LocalDate tradeDate;
+    BigDecimal quantity;
+    String positionType;
+    String outcome;
 }

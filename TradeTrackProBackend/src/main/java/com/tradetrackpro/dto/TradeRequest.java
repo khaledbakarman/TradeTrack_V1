@@ -11,5 +11,9 @@ public class TradeRequest {
     private Double profitLoss;
     private String notes;
     private Long userId;  // sent from frontend
+    private java.time.LocalDate tradeDate;
+    private Double quantity;
+    private String positionType;
+    private String outcome;
 
 }
