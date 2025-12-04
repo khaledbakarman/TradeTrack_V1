@@ -13,6 +13,7 @@
       </select>
     </label>
     <button (click)="clearFilters()">Clear Filters</button>
+    <button class="export-btn" (click)="openExportModal()">Export Trades</button>
   </div>
 
   <div *ngIf="filteredTrades.length === 0" class="no-trades">
@@ -54,5 +55,25 @@
       {{ page }}
     </button>
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+
+  <!-- Export Modal -->
+  <div class="modal-overlay" *ngIf="showExportModal">
+    <div class="modal">
+      <h3>Export Trades</h3>
+      <label>Start Date: <input type="date" [(ngModel)]="exportStartDate"></label>
+      <label>End Date: <input type="date" [(ngModel)]="exportEndDate"></label>
+
+      <label>Format:</label>
+      <select [(ngModel)]="exportFormat">
+        <option value="EXCEL">Excel (.xlsx)</option>
+        <option value="PDF">PDF (.pdf)</option>
+      </select>
+
+      <div class="modal-actions">
+        <button (click)="exportTrades()">Export</button>
+        <button class="cancel-btn" (click)="closeExportModal()">Cancel</button>
+      </div>
+    </div>
   </div>
 </div>

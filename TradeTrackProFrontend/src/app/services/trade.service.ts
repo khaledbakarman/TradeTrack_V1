@@ -42,4 +42,16 @@ export class TradeService {
     return this.http.get<Trade>(`${this.apiUrl}/${id}`);
   }
 
+  exportExcel(startDate: string, endDate: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/export/excel?startDate=${startDate}&endDate=${endDate}`, {
+      responseType: 'blob'
+    });
+  }
+
+  exportPdf(startDate: string, endDate: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/export/pdf?startDate=${startDate}&endDate=${endDate}`, {
+      responseType: 'blob'
+    });
+  }
+
 }

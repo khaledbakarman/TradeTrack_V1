@@ -59,6 +59,10 @@ public class TradeService {
          return tradeRepository.filterTrades(userId, symbol, startDate, endDate, result, pageable);
     }
 
+    public List<Trade> getFilteredTradesForExport(Long userId, java.time.LocalDate startDate, java.time.LocalDate endDate) {
+        return tradeRepository.filterTrades(userId, null, startDate, endDate, null, org.springframework.data.domain.Pageable.unpaged()).getContent();
+    }
+
     // Returns a single trade by id or throws if it does not exist
     public TradeResponse getTradeById(Long tradeId) {
         Trade trade = tradeRepository.findById(tradeId)

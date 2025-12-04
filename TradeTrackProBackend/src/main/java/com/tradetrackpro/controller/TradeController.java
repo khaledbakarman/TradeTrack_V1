@@ -3,11 +3,16 @@ package com.tradetrackpro.controller;
 import com.tradetrackpro.dto.TradeRequest;
 import com.tradetrackpro.dto.TradeResponse;
 import com.tradetrackpro.service.TradeService;
+import com.tradetrackpro.service.ExportService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.core.io.InputStreamResource;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +28,7 @@ import java.time.LocalDate;
 public class TradeController {
 
     private final TradeService tradeService;
+    private final ExportService exportService;
 
     // Handles POST /api/trades to create a new trade linked to a user
     @PostMapping
@@ -98,5 +104,51 @@ public class TradeController {
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @GetMapping("/export/excel")
+    public ResponseEntity<InputStreamResource> exportExcel(
+            HttpServletRequest request,
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+
+        Long userId = (Long) request.getAttribute("userId");
+        LocalDate sDate = LocalDate.parse(startDate);
+        LocalDate eDate = LocalDate.parse(endDate);
+
+        List<Trade> trades = tradeService.getFilteredTradesForExport(userId, sDate, eDate);
+        ByteArrayInputStream in = exportService.exportTradesToExcel(trades);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=trades.xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(new InputStreamResource(in));
+    }
+
+    @GetMapping("/export/pdf")
+    public ResponseEntity<InputStreamResource> exportPdf(
+            HttpServletRequest request,
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+
+        Long userId = (Long) request.getAttribute("userId");
+        LocalDate sDate = LocalDate.parse(startDate);
+        LocalDate eDate = LocalDate.parse(endDate);
+
+        List<Trade> trades = tradeService.getFilteredTradesForExport(userId, sDate, eDate);
+        ByteArrayInputStream in = exportService.exportTradesToPdf(trades);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=trades.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(in));
     }
 }

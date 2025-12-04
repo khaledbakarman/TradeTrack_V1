@@ -91,6 +91,52 @@ export class TradeListComponent implements OnInit {
     this.router.navigate(['/edit-trade', id]);
   }
 
+  // Export Logic
+  showExportModal = false;
+  exportStartDate: string = '';
+  exportEndDate: string = '';
+  exportFormat: 'EXCEL' | 'PDF' = 'EXCEL';
+
+  openExportModal() {
+    this.showExportModal = true;
+  }
+
+  closeExportModal() {
+    this.showExportModal = false;
+  }
+
+  exportTrades() {
+    if (!this.exportStartDate || !this.exportEndDate) {
+      alert('Please select both start and end dates.');
+      return;
+    }
+    if (this.exportStartDate > this.exportEndDate) {
+      alert('Start date cannot be after end date.');
+      return;
+    }
+
+    if (this.exportFormat === 'EXCEL') {
+      this.tradeService.exportExcel(this.exportStartDate, this.exportEndDate).subscribe(blob => {
+        this.downloadFile(blob, 'trades.xlsx');
+        this.closeExportModal();
+      });
+    } else {
+      this.tradeService.exportPdf(this.exportStartDate, this.exportEndDate).subscribe(blob => {
+        this.downloadFile(blob, 'trades.pdf');
+        this.closeExportModal();
+      });
+    }
+  }
+
+  private downloadFile(blob: Blob, fileName: string) {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
   deleteTrade(id: number): void {
     console.log('Attempting to delete trade:', id);
     if (!confirm('Are you sure you want to delete this trade?')) return;
