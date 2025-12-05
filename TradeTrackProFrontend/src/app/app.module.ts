@@ -17,6 +17,7 @@ import { EditTradeComponent } from './components/edit-trade/edit-trade.component
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
+import { TradeCardComponent } from './components/trade-card/trade-card.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { TokenInterceptor } from './auth/token.interceptor';
     AddTradeComponent,
     AnalyticsComponent,
     NavbarComponent,
-    EditTradeComponent
+    EditTradeComponent,
+    TradeCardComponent
   ],
   imports: [
     BrowserModule,

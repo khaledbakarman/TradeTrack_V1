@@ -18,4 +18,8 @@ export class AuthService {
     const body = { username, password };
     return this.http.post<any>(`${this.baseUrl}/register`, body);
   }
+
+  logout() {
+    localStorage.removeItem('token');
+  }
 }

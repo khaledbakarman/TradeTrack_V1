@@ -1,36 +1,97 @@
-<div class="add-trade-container">
-    <h2>Add Trade</h2>
+<div class="max-w-2xl mx-auto">
+    <div class="bg-trade-card border border-gray-800 rounded-2xl p-8 shadow-2xl">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-white">Add New Trade</h2>
+            <p class="text-gray-400 mt-2">Record your latest market activity</p>
+        </div>
 
-    <label>Date</label>
-    <input type="date" [(ngModel)]="tradeDate" />
+        <div class="space-y-6">
+            <!-- Date & Symbol -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Date</label>
+                    <input type="date" [(ngModel)]="tradeDate"
+                        class="w-full bg-trade-main border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Symbol</label>
+                    <input type="text" [(ngModel)]="symbol" placeholder="e.g. EURUSD, AAPL"
+                        class="w-full bg-trade-main border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors uppercase">
+                </div>
+            </div>
 
-    <label>Symbol</label>
-    <input type="text" [(ngModel)]="symbol" placeholder="AAPL" />
+            <!-- Type & Quantity -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Position Type</label>
+                    <select [(ngModel)]="positionType"
+                        class="w-full bg-trade-main border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors">
+                        <option value="BUY">Long (Buy)</option>
+                        <option value="SELL">Short (Sell)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Quantity / Lots</label>
+                    <input type="number" [(ngModel)]="quantity" placeholder="0.00" step="0.01"
+                        class="w-full bg-trade-main border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors">
+                </div>
+            </div>
 
-    <label>Quantity / Lots</label>
-    <input type="number" [(ngModel)]="quantity" placeholder="e.g., 0.50 lots or 100 units" step="0.01" />
+            <!-- Prices -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Entry Price</label>
+                    <input type="number" [(ngModel)]="entryPrice" placeholder="0.00000" step="0.00001"
+                        class="w-full bg-trade-main border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Exit Price</label>
+                    <input type="number" [(ngModel)]="exitPrice" placeholder="0.00000" step="0.00001"
+                        class="w-full bg-trade-main border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors">
+                </div>
+            </div>
 
-    <label>Position Type</label>
-    <select [(ngModel)]="positionType">
-        <option value="BUY">Buy</option>
-        <option value="SELL">Sell</option>
-    </select>
+            <!-- Outcome & P/L -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">Outcome</label>
+                    <div class="grid grid-cols-3 gap-4">
+                        <button (click)="outcome = 'WIN'" [class.bg-emerald-500]="outcome === 'WIN'"
+                            [class.border-emerald-500]="outcome === 'WIN'" [class.text-white]="outcome === 'WIN'"
+                            class="py-3 rounded-xl border border-gray-700 text-gray-400 font-medium hover:border-gray-500 transition-all">
+                            Win
+                        </button>
+                        <button (click)="outcome = 'LOSS'" [class.bg-red-500]="outcome === 'LOSS'"
+                            [class.border-red-500]="outcome === 'LOSS'" [class.text-white]="outcome === 'LOSS'"
+                            class="py-3 rounded-xl border border-gray-700 text-gray-400 font-medium hover:border-gray-500 transition-all">
+                            Loss
+                        </button>
+                        <button (click)="outcome = 'BREAKEVEN'" [class.bg-gray-600]="outcome === 'BREAKEVEN'"
+                            [class.border-gray-600]="outcome === 'BREAKEVEN'"
+                            [class.text-white]="outcome === 'BREAKEVEN'"
+                            class="py-3 rounded-xl border border-gray-700 text-gray-400 font-medium hover:border-gray-500 transition-all">
+                            Break
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-2">P/L (Manual)</label>
+                    <input type="number" [(ngModel)]="profitLoss" placeholder="0.00" step="0.01"
+                        class="w-full bg-trade-main border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors">
+                </div>
+            </div>
 
-    <label>Entry Price</label>
-    <input type="number" [(ngModel)]="entryPrice" step="0.01" />
+            <!-- Notes -->
+            <div>
+                <label class="block text-sm font-medium text-gray-400 mb-2">Notes</label>
+                <textarea [(ngModel)]="notes" rows="4" placeholder="Analysis, emotions, mistakes..."
+                    class="w-full bg-trade-main border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors resize-none"></textarea>
+            </div>
 
-    <label>Exit Price</label>
-    <input type="number" [(ngModel)]="exitPrice" step="0.01" />
-
-    <label>Outcome</label>
-    <select [(ngModel)]="outcome">
-        <option value="WIN">Win</option>
-        <option value="LOSS">Loss</option>
-        <option value="BREAKEVEN">Breakeven</option>
-    </select>
-
-    <label>Notes</label>
-    <textarea [(ngModel)]="notes" rows="3" placeholder="Notes"></textarea>
-
-    <button (click)="submit()">Save Trade</button>
+            <button (click)="submit()"
+                class="w-full bg-trade-accent hover:bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.01] mt-4">
+                Save Trade
+            </button>
+        </div>
+    </div>
 </div>

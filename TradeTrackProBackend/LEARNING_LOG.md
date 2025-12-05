@@ -426,3 +426,31 @@ Common notes:
   - The application now reliably adds, fetches, and displays trades.
   - Authentication is stable with persistent tokens.
   - The UI is clean and error-free.
+
+## 32) 2025-12-04 — Work Summary
+
+- **Global UI Redesign (Dark Theme)**
+  - **Tailwind CSS Integration**: Installed and configured Tailwind CSS for modern, utility-first styling.
+  - **Theme Overhaul**: Implemented a consistent dark theme (`trade-main`, `trade-card`) across all components (Login, Register, Navbar, Trade List, Add/Edit Trade, Analytics).
+  - **Component Redesigns**:
+    - **Navbar**: Sticky dark header with a clickable logo (redirects to `/trades`) and pill-shaped action buttons.
+    - **Trade List**: Grid layout with glossy dark cards, status badges, and always-visible action buttons (Edit/Delete).
+    - **Forms**: Centered, glass-morphism style cards for Login, Register, and Add/Edit Trade.
+    - **Analytics**: Dark stats cards and chart containers.
+
+- **Manual P/L Implementation**
+  - **Requirement**: Replaced automatic Profit/Loss calculation with manual user input.
+  - **Frontend**:
+    - Added "P/L (Manual)" input field to `AddTradeComponent` and `EditTradeComponent`.
+    - Removed auto-calculation logic from TypeScript files.
+    - Updated `Trade` model to support the manual field.
+  - **Backend**: Verified `Trade` entity and DTOs already supported `profitLoss` persistence.
+
+- **UX Improvements**
+  - **Action Buttons**: Made Edit/Delete buttons on trade cards always visible (removed hover dependency) for better accessibility.
+  - **Navigation**: Enhanced Navbar logo to function as a home link.
+
+- **Outcome**
+  - The application now features a professional, high-end "trading terminal" aesthetic.
+  - Users have full control over their P/L data.
+  - Navigation and interaction are smoother and more intuitive.

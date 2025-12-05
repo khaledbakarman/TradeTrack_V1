@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TradeService } from '../../services/trade.service';
 import { Trade } from '../../models/trade.model';
+import { CurrencyService } from '../../services/currency.service';
 
 @Component({
   selector: 'app-analytics',
@@ -10,6 +11,7 @@ import { Trade } from '../../models/trade.model';
 export class AnalyticsComponent implements OnInit {
 
   trades: Trade[] = [];
+  currency = '$';
 
   totalTrades = 0;
   wins = 0;
@@ -45,7 +47,9 @@ export class AnalyticsComponent implements OnInit {
     ]
   };
 
-  constructor(private tradeService: TradeService) { }
+  constructor(private tradeService: TradeService, private currencyService: CurrencyService) {
+    this.currencyService.currency$.subscribe(c => this.currency = c);
+  }
 
   ngOnInit(): void {
     // Fetch all trades for analytics

@@ -1,78 +1,124 @@
-<div class="trade-list-container">
-  <h2>Your Trades</h2>
+<div class="space-y-8">
+  <!-- Header & Filters -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <h2 class="text-3xl font-bold text-white">Your Trades</h2>
 
-  <div class="filters">
-    <label>Start Date: <input type="date" [(ngModel)]="startDate" (ngModelChange)="applyFilters()"></label>
-    <label>End Date: <input type="date" [(ngModel)]="endDate" (ngModelChange)="applyFilters()"></label>
-    <label>Outcome:
-      <select [(ngModel)]="selectedOutcome" (ngModelChange)="applyFilters()">
-        <option value="All">All</option>
+    <div class="flex flex-wrap items-center gap-3 bg-trade-card p-2 rounded-xl border border-gray-800 shadow-lg">
+      <div class="flex items-center gap-2">
+        <span class="text-gray-400 text-sm pl-2">From:</span>
+        <input type="date" [(ngModel)]="startDate" (ngModelChange)="applyFilters()"
+          class="bg-trade-main border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-trade-accent">
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-gray-400 text-sm">To:</span>
+        <input type="date" [(ngModel)]="endDate" (ngModelChange)="applyFilters()"
+          class="bg-trade-main border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-trade-accent">
+      </div>
+
+      <select [(ngModel)]="selectedOutcome" (ngModelChange)="applyFilters()"
+        class="bg-trade-main border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-trade-accent">
+        <option value="All">All Outcomes</option>
         <option value="WIN">Win</option>
         <option value="LOSS">Loss</option>
         <option value="BREAKEVEN">Breakeven</option>
       </select>
-    </label>
-    <button (click)="clearFilters()">Clear Filters</button>
-    <button class="export-btn" (click)="openExportModal()">Export Trades</button>
-  </div>
 
-  <div *ngIf="filteredTrades.length === 0" class="no-trades">
-    No trades found.
-  </div>
+      <div class="h-6 w-px bg-gray-700 mx-1"></div>
 
-  <div class="trade-grid">
-    <div class="trade-card" *ngFor="let trade of paginatedTrades">
-      <div class="trade-header">
-        <span class="symbol">{{ trade.symbol }}</span>
-        <span class="entry-exit">
-          {{ trade.entryPrice | number:'1.2-2' }} → {{ trade.exitPrice | number:'1.2-2' }}
-        </span>
-      </div>
+      <button (click)="clearFilters()"
+        class="text-gray-400 hover:text-white px-3 py-1.5 text-sm font-medium transition-colors">
+        Clear
+      </button>
 
-      <div class="trade-details">
-        <p><strong>Date:</strong> {{ trade.tradeDate | date:'mediumDate' }}</p>
-        <p><strong>Type:</strong> {{ trade.positionType }} ({{ trade.quantity | number:'1.2-2' }} units/lots)</p>
-        <p>
-          <strong>Profit:</strong>
-          <span [ngClass]="{ 'positive': trade.profitLoss > 0, 'negative': trade.profitLoss < 0 }">
-            {{ trade.profitLoss | number:'1.2-2' }}
-          </span>
-        </p>
-        <p><strong>Outcome:</strong> {{ trade.outcome }}</p>
-        <p class="notes" *ngIf="trade.notes">📝 {{ trade.notes }}</p>
-      </div>
-
-      <div class="actions">
-        <button class="edit-btn" (click)="editTrade(trade.id)">Edit</button>
-        <button class="delete-btn" (click)="deleteTrade(trade.id!)">Delete</button>
-      </div>
+      <button (click)="openExportModal()"
+        class="bg-trade-accent hover:bg-blue-600 text-white px-4 py-1.5 rounded-lg text-sm font-bold shadow-lg shadow-blue-500/20 transition-all hover:scale-105">
+        Export
+      </button>
     </div>
   </div>
 
-  <div class="pagination" *ngIf="totalPages > 1">
-    <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
-    <button *ngFor="let page of totalPagesArray" [class.active]="page === currentPage" (click)="goToPage(page)">
+  <!-- No Trades State -->
+  <div *ngIf="filteredTrades.length === 0"
+    class="text-center py-20 bg-trade-card rounded-2xl border border-gray-800 border-dashed">
+    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-800 mb-4">
+      <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+        </path>
+      </svg>
+    </div>
+    <p class="text-gray-400 text-lg">No trades found matching your filters.</p>
+  </div>
+
+  <!-- Trade Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div *ngFor="let trade of paginatedTrades" class="h-full">
+      <app-trade-card [trade]="trade" (edit)="editTrade($event)" (delete)="deleteTrade($event)">
+      </app-trade-card>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex justify-center gap-2 mt-8" *ngIf="totalPages > 1">
+    <button (click)="prevPage()" [disabled]="currentPage === 1"
+      class="w-10 h-10 rounded-full bg-trade-card border border-gray-800 text-gray-400 hover:text-white hover:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-all">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+
+    <button *ngFor="let page of totalPagesArray" (click)="goToPage(page)" [class.bg-trade-accent]="page === currentPage"
+      [class.text-white]="page === currentPage" [class.border-transparent]="page === currentPage"
+      [class.bg-trade-card]="page !== currentPage" [class.text-gray-400]="page !== currentPage"
+      class="w-10 h-10 rounded-full border border-gray-800 font-medium hover:border-gray-600 transition-all">
       {{ page }}
     </button>
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages"
+      class="w-10 h-10 rounded-full bg-trade-card border border-gray-800 text-gray-400 hover:text-white hover:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-all">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
   </div>
 
   <!-- Export Modal -->
-  <div class="modal-overlay" *ngIf="showExportModal">
-    <div class="modal">
-      <h3>Export Trades</h3>
-      <label>Start Date: <input type="date" [(ngModel)]="exportStartDate"></label>
-      <label>End Date: <input type="date" [(ngModel)]="exportEndDate"></label>
+  <div *ngIf="showExportModal"
+    class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-trade-card border border-gray-700 rounded-2xl w-full max-w-md p-6 shadow-2xl">
+      <h3 class="text-xl font-bold text-white mb-6">Export Trades</h3>
 
-      <label>Format:</label>
-      <select [(ngModel)]="exportFormat">
-        <option value="EXCEL">Excel (.xlsx)</option>
-        <option value="PDF">PDF (.pdf)</option>
-      </select>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-2">Date Range</label>
+          <div class="grid grid-cols-2 gap-4">
+            <input type="date" [(ngModel)]="exportStartDate"
+              class="bg-trade-main border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-trade-accent w-full">
+            <input type="date" [(ngModel)]="exportEndDate"
+              class="bg-trade-main border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-trade-accent w-full">
+          </div>
+        </div>
 
-      <div class="modal-actions">
-        <button (click)="exportTrades()">Export</button>
-        <button class="cancel-btn" (click)="closeExportModal()">Cancel</button>
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-2">Format</label>
+          <select [(ngModel)]="exportFormat"
+            class="w-full bg-trade-main border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-trade-accent">
+            <option value="EXCEL">Excel Spreadsheet (.xlsx)</option>
+            <option value="PDF">PDF Document (.pdf)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-8">
+        <button (click)="closeExportModal()"
+          class="flex-1 px-4 py-2.5 rounded-xl border border-gray-700 text-gray-300 hover:bg-gray-800 font-medium transition-colors">
+          Cancel
+        </button>
+        <button (click)="exportTrades()"
+          class="flex-1 px-4 py-2.5 rounded-xl bg-trade-accent hover:bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02]">
+          Export File
+        </button>
       </div>
     </div>
   </div>

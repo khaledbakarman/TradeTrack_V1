@@ -16,12 +16,13 @@ export class AddTradeComponent {
   quantity: number | null = null;
   positionType: 'BUY' | 'SELL' = 'BUY';
   outcome: 'WIN' | 'LOSS' | 'BREAKEVEN' = 'WIN';
+  profitLoss: number | null = null;
 
   constructor(private tradeService: TradeService, private router: Router) { }
 
   submit() {
-    if (!this.symbol || this.entryPrice == null || this.exitPrice == null || this.quantity == null) {
-      alert('Please fill symbol, prices, and quantity.');
+    if (!this.symbol || this.entryPrice == null || this.exitPrice == null || this.quantity == null || this.profitLoss == null) {
+      alert('Please fill symbol, prices, quantity, and P/L.');
       return;
     }
 
@@ -29,7 +30,7 @@ export class AddTradeComponent {
       symbol: this.symbol.trim().toUpperCase(),
       entryPrice: Number(this.entryPrice),
       exitPrice: Number(this.exitPrice),
-      profitLoss: Number((Number(this.exitPrice) - Number(this.entryPrice)).toFixed(2)),
+      profitLoss: Number(this.profitLoss),
       notes: this.notes,
       tradeDate: this.tradeDate,
       quantity: Number(this.quantity),

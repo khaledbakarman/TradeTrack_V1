@@ -1,50 +1,66 @@
-<div class="analytics-container">
-    <h2>Your Trading Analytics</h2>
+<div class="space-y-8">
+    <div class="flex items-center justify-between">
+        <h2 class="text-3xl font-bold text-white">Performance Analytics</h2>
+        <div class="text-sm text-gray-400">Last updated: Just now</div>
+    </div>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <h3>Total Trades</h3>
-            <p>{{ totalTrades }}</p>
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <!-- Total Trades -->
+        <div
+            class="bg-trade-card border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-blue-900/10 transition-all hover:-translate-y-1">
+            <h3 class="text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">Total Trades</h3>
+            <p class="text-3xl font-bold text-white">{{ totalTrades }}</p>
         </div>
 
-        <div class="stat-card">
-            <h3>Wins</h3>
-            <p class="green">{{ wins }}</p>
+        <!-- Wins -->
+        <div
+            class="bg-trade-card border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-emerald-900/10 transition-all hover:-translate-y-1">
+            <h3 class="text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">Wins</h3>
+            <p class="text-3xl font-bold text-emerald-400">{{ wins }}</p>
         </div>
 
-        <div class="stat-card">
-            <h3>Losses</h3>
-            <p class="red">{{ losses }}</p>
+        <!-- Losses -->
+        <div
+            class="bg-trade-card border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-red-900/10 transition-all hover:-translate-y-1">
+            <h3 class="text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">Losses</h3>
+            <p class="text-3xl font-bold text-red-400">{{ losses }}</p>
         </div>
 
-        <div class="stat-card">
-            <h3>Win Rate</h3>
-            <p>{{ winRate }}%</p>
+        <!-- Win Rate -->
+        <div
+            class="bg-trade-card border border-gray-800 rounded-xl p-6 shadow-lg hover:shadow-blue-900/10 transition-all hover:-translate-y-1">
+            <h3 class="text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">Win Rate</h3>
+            <p class="text-3xl font-bold text-blue-400">{{ winRate }}%</p>
         </div>
 
-        <div class="stat-card">
-            <h3>Total Profit</h3>
-            <p [ngClass]="totalProfit >= 0 ? 'green' : 'red'">
-                {{ totalProfit }}
+        <!-- Total Profit -->
+        <div class="bg-trade-card border border-gray-800 rounded-xl p-6 shadow-lg transition-all hover:-translate-y-1">
+            <h3 class="text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">Net P/L</h3>
+            <p [ngClass]="totalProfit >= 0 ? 'text-emerald-400' : 'text-red-400'" class="text-3xl font-bold">
+                {{ currency }} {{ totalProfit | number:'1.2-2' }}
             </p>
         </div>
     </div>
 
-    <h2>Charts</h2>
-
-    <div class="chart-section">
-
-        <div class="chart-box">
-            <h3>Win / Loss Chart</h3>
-            <canvas baseChart [data]="winLossData" [labels]="winLossLabels" [type]="'bar'">
-            </canvas>
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-trade-card border border-gray-800 rounded-xl p-6 shadow-lg">
+            <h3 class="text-xl font-bold text-white mb-6">Win / Loss Ratio</h3>
+            <div class="relative h-64">
+                <canvas baseChart [data]="winLossData" [labels]="winLossLabels" [type]="'bar'"
+                    [options]="{ responsive: true, maintainAspectRatio: false }">
+                </canvas>
+            </div>
         </div>
 
-        <div class="chart-box">
-            <h3>Equity Curve</h3>
-            <canvas baseChart [data]="equityData" [labels]="equityLabels" [type]="'line'">
-            </canvas>
+        <div class="bg-trade-card border border-gray-800 rounded-xl p-6 shadow-lg">
+            <h3 class="text-xl font-bold text-white mb-6">Equity Curve</h3>
+            <div class="relative h-64">
+                <canvas baseChart [data]="equityData" [labels]="equityLabels" [type]="'line'"
+                    [options]="{ responsive: true, maintainAspectRatio: false }">
+                </canvas>
+            </div>
         </div>
-
     </div>
 </div>
