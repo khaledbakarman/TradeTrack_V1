@@ -10,4 +10,7 @@ export interface Trade {
   quantity: number;
   positionType: 'BUY' | 'SELL';
   outcome: 'WIN' | 'LOSS' | 'BREAKEVEN';
+  tp?: number;
+  sl?: number;
+  result?: string;
 }

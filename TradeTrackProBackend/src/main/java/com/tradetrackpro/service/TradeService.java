@@ -38,6 +38,9 @@ public class TradeService {
                 .quantity(asBigDecimal(request.getQuantity()))
                 .positionType(request.getPositionType())
                 .outcome(request.getOutcome())
+                .tp(request.getTp())
+                .sl(request.getSl())
+                .result(request.getResult())
                 .build();
 
         Trade saved = tradeRepository.save(trade);
@@ -90,6 +93,9 @@ public class TradeService {
         existing.setQuantity(asBigDecimal(request.getQuantity()));
         existing.setPositionType(request.getPositionType());
         existing.setOutcome(request.getOutcome());
+        existing.setTp(request.getTp());
+        existing.setSl(request.getSl());
+        existing.setResult(request.getResult());
 
         Trade updated = tradeRepository.save(existing);
         return toResponse(updated);
@@ -120,6 +126,9 @@ public class TradeService {
                 .quantity(trade.getQuantity())
                 .positionType(trade.getPositionType())
                 .outcome(trade.getOutcome())
+                .tp(trade.getTp())
+                .sl(trade.getSl())
+                .result(trade.getResult())
                 .build();
     }
 

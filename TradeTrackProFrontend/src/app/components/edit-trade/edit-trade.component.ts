@@ -23,6 +23,9 @@ export class EditTradeComponent implements OnInit, AfterViewInit {
   positionType: 'BUY' | 'SELL' = 'BUY';
   outcome: 'WIN' | 'LOSS' | 'BREAKEVEN' = 'WIN';
   profitLoss!: number;
+  tp: number | null = null;
+  sl: number | null = null;
+  result: string = 'Closed manually';
 
   private fpInstance: any;
 
@@ -47,6 +50,9 @@ export class EditTradeComponent implements OnInit, AfterViewInit {
       this.positionType = t.positionType;
       this.outcome = t.outcome;
       this.profitLoss = t.profitLoss;
+      this.tp = t.tp || null;
+      this.sl = t.sl || null;
+      this.result = t.result || 'Closed manually';
 
       if (this.fpInstance) {
         this.fpInstance.setDate(this.tradeDate);
@@ -76,7 +82,10 @@ export class EditTradeComponent implements OnInit, AfterViewInit {
       tradeDate: this.tradeDate,
       quantity: this.quantity,
       positionType: this.positionType,
-      outcome: this.outcome
+      outcome: this.outcome,
+      tp: this.tp,
+      sl: this.sl,
+      result: this.result
     };
 
     this.tradeService.updateTrade(this.tradeId, payload).subscribe({

@@ -454,3 +454,31 @@ Common notes:
   - The application now features a professional, high-end "trading terminal" aesthetic.
   - Users have full control over their P/L data.
   - Navigation and interaction are smoother and more intuitive.
+
+## 33) 2025-12-05 — Work Summary
+
+- **Analytics Dashboard Upgrade**
+  - **Date Range Filter**: Added a custom date picker to filter analytics data by specific periods.
+  - **Monthly Performance Heatmap**: Implemented a visual heatmap (Year vs Month) to track consistency and profitability.
+  - **New Charts**:
+    - **Profit by Day of Week**: Bar chart to identify best performing days.
+    - **Profit by Symbol**: Bar chart showing P/L per traded asset.
+    - **Win/Loss Distribution**: Pie chart visualizing win rate.
+  - **Layout**: Reordered the dashboard to prioritize the Heatmap at the top.
+
+- **Trade Details Expansion**
+  - **New Fields**: Added `Take Profit (TP)`, `Stop Loss (SL)`, and `Result` (e.g., "TP hit", "Closed manually") to the full stack.
+  - **Backend**: Updated `Trade` entity, DTOs (`TradeRequest`, `TradeResponse`), and `TradeService` to persist and retrieve these fields.
+  - **Frontend**: Updated `Trade` model and integrated new input fields into **Add Trade** and **Edit Trade** forms.
+
+- **UI/UX Improvements**
+  - **Trade Cards**:
+    - Added dynamic glow effects (Green for wins, Red for losses).
+    - Implemented a **Horizontal 3-Dot Menu** (● ● ●) positioned below the Exit price.
+    - Added a **Popup Panel** to display TP, SL, and Result details on demand.
+  - **Refinement**: Ensured consistent dark theme styling across all new elements.
+
+- **Outcome**
+  - Users can now perform deep analysis of their trading habits.
+  - Trade cards provide more detail without clutter, thanks to the smart popup menu.
+  - The application feels more robust and feature-rich.

@@ -15,5 +15,8 @@ public class TradeRequest {
     private Double quantity;
     private String positionType;
     private String outcome;
+    private Double tp;
+    private Double sl;
+    private String result;
 
 }

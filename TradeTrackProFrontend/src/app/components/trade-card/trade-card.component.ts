@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, HostListener } from '@angular/core';
 import { Trade } from '../../models/trade.model';
 import { CurrencyService } from '../../services/currency.service';
 
@@ -24,5 +24,18 @@ export class TradeCardComponent {
 
   onDelete() {
     this.delete.emit(this.trade.id);
+  }
+
+  // 3-Dot Menu Logic
+  isMenuOpen = false;
+
+  toggleMenu(event: MouseEvent) {
+    event.stopPropagation();
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  @HostListener('document:click')
+  closeMenu() {
+    this.isMenuOpen = false;
   }
 }

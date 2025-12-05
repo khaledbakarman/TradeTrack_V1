@@ -18,6 +18,9 @@ export class AddTradeComponent implements AfterViewInit {
   positionType: 'BUY' | 'SELL' = 'BUY';
   outcome: 'WIN' | 'LOSS' | 'BREAKEVEN' = 'WIN';
   profitLoss: number | null = null;
+  tp: number | null = null;
+  sl: number | null = null;
+  result: string = 'Closed manually';
 
   constructor(private tradeService: TradeService, private router: Router) { }
 
@@ -49,7 +52,10 @@ export class AddTradeComponent implements AfterViewInit {
       tradeDate: this.tradeDate,
       quantity: Number(this.quantity),
       positionType: this.positionType,
-      outcome: this.outcome
+      outcome: this.outcome,
+      tp: this.tp ? Number(this.tp) : null,
+      sl: this.sl ? Number(this.sl) : null,
+      result: this.result
     };
 
     this.tradeService.addTrade(payload).subscribe({

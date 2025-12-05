@@ -20,4 +20,7 @@ public class TradeResponse {
     BigDecimal quantity;
     String positionType;
     String outcome;
+    Double tp;
+    Double sl;
+    String result;
 }

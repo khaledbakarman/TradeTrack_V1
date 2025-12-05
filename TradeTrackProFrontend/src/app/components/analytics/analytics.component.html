@@ -70,6 +70,37 @@
         </div>
     </div>
 
+    <!-- Monthly Performance Heatmap -->
+    <div class="bg-trade-card border border-gray-800 rounded-xl p-6 shadow-lg mb-6">
+        <h2 class="text-white font-semibold mb-4 text-xl">Monthly Performance Heatmap</h2>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-sm text-center text-gray-300 border-collapse">
+                <thead>
+                    <tr>
+                        <th class="p-3 border border-gray-700 bg-gray-900 text-white font-bold">Year</th>
+                        <th *ngFor="let m of months"
+                            class="p-3 border border-gray-700 bg-gray-900 text-white font-bold">
+                            {{ m }}
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let year of getYears()">
+                        <td class="p-3 border border-gray-700 font-bold text-white bg-gray-800">{{ year }}</td>
+
+                        <td *ngFor="let m of months"
+                            class="p-3 border border-gray-700 font-medium transition-all hover:opacity-90 cursor-default"
+                            [ngClass]="getHeatmapColor(monthlyData[year][m] || 0)">
+                            {{ monthlyData[year][m] ? (monthlyData[year][m] | number:'1.0-0') : '-' }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div class="bg-trade-card border border-gray-800 rounded-xl p-6 shadow-lg">
@@ -99,34 +130,5 @@
         </div>
     </div>
 
-    <!-- Monthly Performance Heatmap -->
-    <div class="bg-trade-card border border-gray-800 rounded-xl p-6 shadow-lg mt-6">
-        <h2 class="text-white font-semibold mb-4 text-xl">Monthly Performance Heatmap</h2>
 
-        <div class="overflow-x-auto">
-            <table class="min-w-full text-sm text-center text-gray-300 border-collapse">
-                <thead>
-                    <tr>
-                        <th class="p-3 border border-gray-700 bg-gray-900 text-white font-bold">Year</th>
-                        <th *ngFor="let m of months"
-                            class="p-3 border border-gray-700 bg-gray-900 text-white font-bold">
-                            {{ m }}
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr *ngFor="let year of getYears()">
-                        <td class="p-3 border border-gray-700 font-bold text-white bg-gray-800">{{ year }}</td>
-
-                        <td *ngFor="let m of months"
-                            class="p-3 border border-gray-700 font-medium transition-all hover:opacity-90 cursor-default"
-                            [ngClass]="getHeatmapColor(monthlyData[year][m] || 0)">
-                            {{ monthlyData[year][m] ? (monthlyData[year][m] | number:'1.0-0') : '-' }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 </div>

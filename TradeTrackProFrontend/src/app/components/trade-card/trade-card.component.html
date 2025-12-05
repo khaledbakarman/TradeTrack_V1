@@ -1,15 +1,22 @@
-<div
-    class="bg-trade-card rounded-2xl p-6 shadow-xl border border-gray-800 relative overflow-hidden h-full flex flex-col">
+<div class="bg-trade-card rounded-2xl p-6 shadow-xl border border-gray-800 relative overflow-hidden h-full flex flex-col transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl"
+    [ngClass]="{
+      'hover:shadow-emerald-500/20': trade.profitLoss > 0,
+      'hover:shadow-red-500/20': trade.profitLoss < 0,
+      'hover:shadow-gray-500/20': trade.profitLoss === 0
+    }">
     <!-- Header -->
-    <div class="flex justify-between items-center mb-2">
+    <div class="flex justify-between items-center mb-2 relative">
         <h3 class="text-3xl font-black text-white tracking-tight">{{ trade.symbol }}</h3>
-        <span [ngClass]="{
-      'bg-emerald-500 text-white': trade.outcome === 'WIN',
-      'bg-red-600 text-white': trade.outcome === 'LOSS',
-      'bg-gray-600 text-white': trade.outcome === 'BREAKEVEN'
-    }" class="px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider shadow-md">
-            {{ trade.outcome }}
-        </span>
+
+        <div class="flex items-center gap-3">
+            <span [ngClass]="{
+          'bg-emerald-500 text-white': trade.outcome === 'WIN',
+          'bg-red-600 text-white': trade.outcome === 'LOSS',
+          'bg-gray-600 text-white': trade.outcome === 'BREAKEVEN'
+        }" class="px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider shadow-md">
+                {{ trade.outcome }}
+            </span>
+        </div>
     </div>
 
     <!-- Metadata -->
@@ -34,9 +41,39 @@
             <div class="text-gray-500 text-[10px] font-bold uppercase tracking-wider mb-1">ENTRY</div>
             <div class="text-xl font-bold text-white">{{ trade.entryPrice | number:'1.2-2' }}</div>
         </div>
-        <div class="text-right">
+        <div class="text-right relative">
             <div class="text-gray-500 text-[10px] font-bold uppercase tracking-wider mb-1">EXIT</div>
             <div class="text-xl font-bold text-white">{{ trade.exitPrice | number:'1.2-2' }}</div>
+
+            <!-- Horizontal 3-Dot Menu Button -->
+            <button class="flex space-x-1 absolute right-0 mt-2 text-gray-400 hover:text-white p-1"
+                (click)="toggleMenu($event)">
+                <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
+                <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
+                <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
+            </button>
+
+            <!-- Popup Panel -->
+            <div *ngIf="isMenuOpen"
+                class="absolute right-8 top-8 bg-gray-800 border border-gray-700 rounded-xl shadow-2xl p-4 w-48 z-50 animate-fade-in-down text-left">
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-gray-500 uppercase">TP</span>
+                        <span class="text-sm font-bold text-emerald-400">{{ trade.tp ? (trade.tp | number:'1.2-5') :
+                            '-' }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-gray-500 uppercase">SL</span>
+                        <span class="text-sm font-bold text-red-400">{{ trade.sl ? (trade.sl | number:'1.2-5') : '-'
+                            }}</span>
+                    </div>
+                    <div class="h-px bg-gray-700 my-2"></div>
+                    <div>
+                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">Result</span>
+                        <span class="text-sm font-medium text-white">{{ trade.result || 'Closed manually' }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
