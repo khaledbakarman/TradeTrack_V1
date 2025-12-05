@@ -6,14 +6,16 @@
     <div class="flex flex-wrap items-center gap-3 bg-trade-card p-2 rounded-xl border border-gray-800 shadow-lg">
       <div class="flex items-center gap-2">
         <span class="text-gray-400 text-sm pl-2">From:</span>
-        <input type="date" [(ngModel)]="startDate" (ngModelChange)="applyFilters()"
-          class="bg-trade-main border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-trade-accent">
+        <input type="text" id="startDate"
+          class="bg-trade-main border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-trade-accent placeholder-gray-600"
+          placeholder="Start Date">
       </div>
 
       <div class="flex items-center gap-2">
         <span class="text-gray-400 text-sm">To:</span>
-        <input type="date" [(ngModel)]="endDate" (ngModelChange)="applyFilters()"
-          class="bg-trade-main border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-trade-accent">
+        <input type="text" id="endDate"
+          class="bg-trade-main border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-trade-accent placeholder-gray-600"
+          placeholder="End Date">
       </div>
 
       <select [(ngModel)]="selectedOutcome" (ngModelChange)="applyFilters()"
@@ -93,10 +95,12 @@
         <div>
           <label class="block text-sm font-medium text-gray-400 mb-2">Date Range</label>
           <div class="grid grid-cols-2 gap-4">
-            <input type="date" [(ngModel)]="exportStartDate"
-              class="bg-trade-main border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-trade-accent w-full">
-            <input type="date" [(ngModel)]="exportEndDate"
-              class="bg-trade-main border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-trade-accent w-full">
+            <input type="text" id="exportStartDate"
+              class="bg-trade-main border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-trade-accent w-full placeholder-gray-600"
+              placeholder="Start Date">
+            <input type="text" id="exportEndDate"
+              class="bg-trade-main border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:border-trade-accent w-full placeholder-gray-600"
+              placeholder="End Date">
           </div>
         </div>
 

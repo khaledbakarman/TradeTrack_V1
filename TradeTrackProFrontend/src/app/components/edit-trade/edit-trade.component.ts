@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TradeService } from '../../services/trade.service';
 import { Trade } from '../../models/trade.model';
+import flatpickr from "flatpickr";
 
 @Component({
   selector: 'app-edit-trade',
   templateUrl: './edit-trade.component.html',
   styleUrls: ['./edit-trade.component.scss']
 })
-export class EditTradeComponent implements OnInit {
+export class EditTradeComponent implements OnInit, AfterViewInit {
 
   tradeId!: number;
   trade!: Trade;
@@ -22,6 +23,8 @@ export class EditTradeComponent implements OnInit {
   positionType: 'BUY' | 'SELL' = 'BUY';
   outcome: 'WIN' | 'LOSS' | 'BREAKEVEN' = 'WIN';
   profitLoss!: number;
+
+  private fpInstance: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +47,22 @@ export class EditTradeComponent implements OnInit {
       this.positionType = t.positionType;
       this.outcome = t.outcome;
       this.profitLoss = t.profitLoss;
+
+      if (this.fpInstance) {
+        this.fpInstance.setDate(this.tradeDate);
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    this.fpInstance = flatpickr(".date-picker", {
+      dateFormat: "Y-m-d",
+      allowInput: true,
+      altInput: true,
+      altFormat: "M j, Y",
+      onChange: (selectedDates, dateStr) => {
+        this.tradeDate = dateStr;
+      }
     });
   }
 

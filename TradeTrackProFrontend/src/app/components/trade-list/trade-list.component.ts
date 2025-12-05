@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TradeService } from '../../services/trade.service';
 import { Trade } from '../../models/trade.model';
+import flatpickr from "flatpickr";
 
 @Component({
   selector: 'app-trade-list',
   templateUrl: './trade-list.component.html',
   styleUrls: ['./trade-list.component.scss']
 })
-export class TradeListComponent implements OnInit {
+export class TradeListComponent implements OnInit, AfterViewInit {
 
   trades: Trade[] = [];
   filteredTrades: Trade[] = [];
@@ -26,6 +27,32 @@ export class TradeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTrades();
+  }
+
+  ngAfterViewInit() {
+    flatpickr("#startDate", {
+      dateFormat: "Y-m-d",
+      allowInput: true,
+      altInput: true,
+      altFormat: "M j, Y",
+
+      onChange: (selectedDates, dateStr) => {
+        this.startDate = dateStr;
+        this.applyFilters();
+      }
+    });
+
+    flatpickr("#endDate", {
+      dateFormat: "Y-m-d",
+      allowInput: true,
+      altInput: true,
+      altFormat: "M j, Y",
+
+      onChange: (selectedDates, dateStr) => {
+        this.endDate = dateStr;
+        this.applyFilters();
+      }
+    });
   }
 
   loadTrades() {
@@ -59,6 +86,12 @@ export class TradeListComponent implements OnInit {
     this.filteredTrades = [...this.trades];
     this.currentPage = 1;
     this.calculatePagination();
+
+    // Clear flatpickr inputs
+    const startPicker = document.querySelector("#startDate") as any;
+    const endPicker = document.querySelector("#endDate") as any;
+    if (startPicker && startPicker._flatpickr) startPicker._flatpickr.clear();
+    if (endPicker && endPicker._flatpickr) endPicker._flatpickr.clear();
   }
 
   calculatePagination() {
@@ -99,6 +132,29 @@ export class TradeListComponent implements OnInit {
 
   openExportModal() {
     this.showExportModal = true;
+    setTimeout(() => {
+      flatpickr("#exportStartDate", {
+        dateFormat: "Y-m-d",
+        allowInput: true,
+        altInput: true,
+        altFormat: "M j, Y",
+
+        onChange: (selectedDates, dateStr) => {
+          this.exportStartDate = dateStr;
+        }
+      });
+
+      flatpickr("#exportEndDate", {
+        dateFormat: "Y-m-d",
+        allowInput: true,
+        altInput: true,
+        altFormat: "M j, Y",
+
+        onChange: (selectedDates, dateStr) => {
+          this.exportEndDate = dateStr;
+        }
+      });
+    }, 0);
   }
 
   closeExportModal() {
