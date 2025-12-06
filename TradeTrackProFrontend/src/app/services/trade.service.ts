@@ -42,14 +42,9 @@ export class TradeService {
     return this.http.get<Trade>(`${this.apiUrl}/${id}`);
   }
 
-  exportExcel(startDate: string, endDate: string): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/export/excel?startDate=${startDate}&endDate=${endDate}`, {
-      responseType: 'blob'
-    });
-  }
-
-  exportPdf(startDate: string, endDate: string): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/export/pdf?startDate=${startDate}&endDate=${endDate}`, {
+  exportData(startDate: string, endDate: string, includeTrades: boolean, includeAnalytics: boolean, format: string): Observable<Blob> {
+    const params = `?startDate=${startDate}&endDate=${endDate}&includeTrades=${includeTrades}&includeAnalytics=${includeAnalytics}&format=${format}`;
+    return this.http.post(`${this.apiUrl}/export${params}`, {}, {
       responseType: 'blob'
     });
   }

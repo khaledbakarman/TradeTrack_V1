@@ -4,7 +4,9 @@ com\tradetrackpro\service\ExportService.class
 com\tradetrackpro\model\Trade.class
 com\tradetrackpro\dto\TradeRequest.class
 com\tradetrackpro\service\UserService.class
+com\tradetrackpro\service\ExportService$FooterEvent.class
 com\tradetrackpro\dto\LoginRequest.class
+com\tradetrackpro\controller\ExportController.class
 com\tradetrackpro\controller\TradeController.class
 com\tradetrackpro\dto\RegisterRequest.class
 com\tradetrackpro\model\User$UserBuilder.class
@@ -18,5 +20,6 @@ com\tradetrackpro\model\User.class
 com\tradetrackpro\repository\TradeRepository.class
 com\tradetrackpro\security\JwtFilter.class
 com\tradetrackpro\service\TradeService.class
+com\tradetrackpro\service\ExportService$Analytics.class
 com\tradetrackpro\config\WebConfig$1.class
 com\tradetrackpro\security\JwtUtil.class

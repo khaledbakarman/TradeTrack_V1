@@ -16,6 +16,7 @@ public class TradeResponse {
     BigDecimal exitPrice;
     BigDecimal profitLoss;
     String notes;
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate tradeDate;
     BigDecimal quantity;
     String positionType;

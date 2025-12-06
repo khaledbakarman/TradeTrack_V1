@@ -482,3 +482,32 @@ Common notes:
   - Users can now perform deep analysis of their trading habits.
   - Trade cards provide more detail without clutter, thanks to the smart popup menu.
   - The application feels more robust and feature-rich.
+
+## 34) 2025-12-06 — Work Summary
+
+- **Professional PDF Export Upgrade**
+  - **Complete Overhaul**: Replaced the basic PDF export with a professional, journal-quality report.
+  - **New Features**:
+    - **Header**: Added a styled header with "TradeTrackPro" branding and dynamic report dates.
+    - **Analytics Box**: Created a shaded summary box at the top displaying Win Rate, Total P/L (colored green/red), and Best/Worst trades in a 2-column grid.
+    - **Styled Table**: Implemented alternating row colors (zebra striping) and a dark header row for better readability.
+    - **Footer**: Added automatic pagination ("Generated on [Date] | Page X") to every page.
+
+- **Export Architecture Refactor (POST)**
+  - **Frontend**: Updated `TradeService` to send `POST` requests for exports, allowing for potential future payload expansion.
+  - **Backend**:
+    - Created `ExportController` to handle the new `POST /api/trades/export` endpoint.
+    - Refactored `ExportService` to centralize data fetching and file generation, cleaning up `TradeController`.
+    - Removed the old `GET` export endpoint.
+
+- **Critical Bug Fixes**
+  - **Trade List Visibility**: Fixed a persistent issue where trades wouldn't load due to incorrect date string comparisons in frontend filtering.
+  - **Date Format Serialization**: Added `@JsonFormat` to backend DTOs to enforce `yyyy-MM-dd` consistency, resolving frontend/backend mismatches.
+  - **Export Crashes (500 Error)**:
+    - Fixed a `NullPointerException` caused by trades having missing dates during the sort operation for the PDF.
+    - Implemented `parseDateSafely` to gracefully handle "undefined" or null date strings sent by the frontend, preventing server crashes when no date filter is selected.
+
+- **Outcome**
+  - Users can now generate professional-grade PDF reports of their trading performance.
+  - The export system is robust, crash-proof, and architecturally sound (std. REST practices).
+  - Core data loading logic is now reliable across the stack.

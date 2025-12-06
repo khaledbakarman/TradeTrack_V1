@@ -11,6 +11,7 @@ public class TradeRequest {
     private Double profitLoss;
     private String notes;
     private Long userId;  // sent from frontend
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd")
     private java.time.LocalDate tradeDate;
     private Double quantity;
     private String positionType;

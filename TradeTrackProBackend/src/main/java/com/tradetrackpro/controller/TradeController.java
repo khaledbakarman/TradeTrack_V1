@@ -106,49 +106,4 @@ public class TradeController {
         }
     }
 
-    @GetMapping("/export/excel")
-    public ResponseEntity<InputStreamResource> exportExcel(
-            HttpServletRequest request,
-            @RequestParam String startDate,
-            @RequestParam String endDate) {
-
-        Long userId = (Long) request.getAttribute("userId");
-        LocalDate sDate = LocalDate.parse(startDate);
-        LocalDate eDate = LocalDate.parse(endDate);
-
-        List<Trade> trades = tradeService.getFilteredTradesForExport(userId, sDate, eDate);
-        ByteArrayInputStream in = exportService.exportTradesToExcel(trades);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=trades.xlsx");
-
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-                .body(new InputStreamResource(in));
-    }
-
-    @GetMapping("/export/pdf")
-    public ResponseEntity<InputStreamResource> exportPdf(
-            HttpServletRequest request,
-            @RequestParam String startDate,
-            @RequestParam String endDate) {
-
-        Long userId = (Long) request.getAttribute("userId");
-        LocalDate sDate = LocalDate.parse(startDate);
-        LocalDate eDate = LocalDate.parse(endDate);
-
-        List<Trade> trades = tradeService.getFilteredTradesForExport(userId, sDate, eDate);
-        ByteArrayInputStream in = exportService.exportTradesToPdf(trades);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=trades.pdf");
-
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(new InputStreamResource(in));
-    }
 }

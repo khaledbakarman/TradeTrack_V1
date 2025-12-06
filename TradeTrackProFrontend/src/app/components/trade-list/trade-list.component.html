@@ -104,6 +104,41 @@
           </div>
         </div>
 
+        <div class="space-y-3">
+          <label class="block text-sm font-medium text-gray-400">Include Data</label>
+          <div class="flex items-center gap-4">
+            <label class="flex items-center gap-2 cursor-pointer group">
+              <div class="relative">
+                <input type="checkbox" [(ngModel)]="includeTrades" class="peer sr-only">
+                <div
+                  class="w-5 h-5 border-2 border-gray-600 rounded bg-trade-main peer-checked:bg-trade-accent peer-checked:border-trade-accent transition-all">
+                </div>
+                <svg
+                  class="w-3.5 h-3.5 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <span class="text-sm text-gray-300 group-hover:text-white transition-colors">Trades</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer group">
+              <div class="relative">
+                <input type="checkbox" [(ngModel)]="includeAnalytics" class="peer sr-only">
+                <div
+                  class="w-5 h-5 border-2 border-gray-600 rounded bg-trade-main peer-checked:bg-trade-accent peer-checked:border-trade-accent transition-all">
+                </div>
+                <svg
+                  class="w-3.5 h-3.5 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <span class="text-sm text-gray-300 group-hover:text-white transition-colors">Analytics</span>
+            </label>
+          </div>
+        </div>
+
         <div>
           <label class="block text-sm font-medium text-gray-400 mb-2">Format</label>
           <select [(ngModel)]="exportFormat"

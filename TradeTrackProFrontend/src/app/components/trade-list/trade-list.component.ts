@@ -69,8 +69,12 @@ export class TradeListComponent implements OnInit, AfterViewInit {
 
   applyFilters() {
     this.filteredTrades = this.trades.filter(trade => {
-      const matchesStart = !this.startDate || trade.tradeDate >= this.startDate;
-      const matchesEnd = !this.endDate || trade.tradeDate <= this.endDate;
+      const start = this.startDate ? new Date(this.startDate) : null;
+      const end = this.endDate ? new Date(this.endDate) : null;
+      const tradeDate = new Date(trade.tradeDate);
+
+      const matchesStart = !start || tradeDate >= start;
+      const matchesEnd = !end || tradeDate <= end;
       const matchesOutcome = this.selectedOutcome === 'All' || trade.outcome === this.selectedOutcome;
 
       return matchesStart && matchesEnd && matchesOutcome;
@@ -129,6 +133,8 @@ export class TradeListComponent implements OnInit, AfterViewInit {
   exportStartDate: string = '';
   exportEndDate: string = '';
   exportFormat: 'EXCEL' | 'PDF' = 'EXCEL';
+  includeTrades = true;
+  includeAnalytics = true;
 
   openExportModal() {
     this.showExportModal = true;
@@ -162,26 +168,28 @@ export class TradeListComponent implements OnInit, AfterViewInit {
   }
 
   exportTrades() {
-    if (!this.exportStartDate || !this.exportEndDate) {
-      alert('Please select both start and end dates.');
+    if ((this.exportStartDate && !this.exportEndDate) || (!this.exportStartDate && this.exportEndDate)) {
+      alert('Please select both start and end dates, or leave both empty to export all.');
       return;
     }
-    if (this.exportStartDate > this.exportEndDate) {
+    if (this.exportStartDate && this.exportEndDate && this.exportStartDate > this.exportEndDate) {
       alert('Start date cannot be after end date.');
       return;
     }
-
-    if (this.exportFormat === 'EXCEL') {
-      this.tradeService.exportExcel(this.exportStartDate, this.exportEndDate).subscribe(blob => {
-        this.downloadFile(blob, 'trades.xlsx');
-        this.closeExportModal();
-      });
-    } else {
-      this.tradeService.exportPdf(this.exportStartDate, this.exportEndDate).subscribe(blob => {
-        this.downloadFile(blob, 'trades.pdf');
-        this.closeExportModal();
-      });
+    if (!this.includeTrades && !this.includeAnalytics) {
+      alert('Please select at least one export option.');
+      return;
     }
+
+    const format = this.exportFormat === 'EXCEL' ? 'excel' : 'pdf';
+    this.tradeService.exportData(this.exportStartDate, this.exportEndDate, this.includeTrades, this.includeAnalytics, format)
+      .subscribe({
+        next: (blob) => {
+          this.downloadFile(blob, `TradeReport.${format === 'excel' ? 'xlsx' : 'pdf'}`);
+          this.closeExportModal();
+        },
+        error: (err) => console.error('Export failed', err)
+      });
   }
 
   private downloadFile(blob: Blob, fileName: string) {
