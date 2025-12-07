@@ -26,7 +26,7 @@ public class UserService {
         user.setCreatedAt(LocalDateTime.now());
 
         User saved = userRepository.save(user);
-        return new AuthResponse(saved.getId(), "Registration successful");
+        return new AuthResponse(saved.getId(), saved.getUsername(), null, "Registration successful");
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -34,7 +34,7 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("Invalid username or password");
         }
-        return new AuthResponse(user.getId(), "Login successful");
+        return new AuthResponse(user.getId(), user.getUsername(), null, "Login successful");
     }
 
     public User validateUser(String username, String password) {

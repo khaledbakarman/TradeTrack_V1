@@ -32,7 +32,15 @@ public class TradeService {
         trade.setSymbol(request.getSymbol());
         trade.setEntryPrice(asBigDecimal(request.getEntryPrice()));
         trade.setExitPrice(asBigDecimal(request.getExitPrice()));
-        trade.setProfitLoss(asBigDecimal(request.getProfitLoss()));
+        BigDecimal pl = asBigDecimal(request.getProfitLoss());
+        if (pl != null) {
+            if ("LOSS".equalsIgnoreCase(request.getOutcome())) {
+                pl = pl.abs().negate();
+            } else if ("WIN".equalsIgnoreCase(request.getOutcome())) {
+                pl = pl.abs();
+            }
+        }
+        trade.setProfitLoss(pl);
         trade.setNotes(request.getNotes());
         trade.setTradeDate(request.getTradeDate());
         trade.setQuantity(asBigDecimal(request.getQuantity()));
@@ -86,7 +94,15 @@ public class TradeService {
         existing.setSymbol(request.getSymbol());
         existing.setEntryPrice(asBigDecimal(request.getEntryPrice()));
         existing.setExitPrice(asBigDecimal(request.getExitPrice()));
-        existing.setProfitLoss(asBigDecimal(request.getProfitLoss()));
+        BigDecimal pl = asBigDecimal(request.getProfitLoss());
+        if (pl != null) {
+            if ("LOSS".equalsIgnoreCase(request.getOutcome())) {
+                pl = pl.abs().negate();
+            } else if ("WIN".equalsIgnoreCase(request.getOutcome())) {
+                pl = pl.abs();
+            }
+        }
+        existing.setProfitLoss(pl);
         existing.setNotes(request.getNotes());
         existing.setTradeDate(request.getTradeDate());
         existing.setQuantity(asBigDecimal(request.getQuantity()));

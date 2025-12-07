@@ -17,6 +17,7 @@ public class CalendarService {
     public List<CalendarDayDto> getCalendarData(int year, int month, Long userId) {
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+        System.out.println("CalendarService: Querying " + start + " to " + end + " for userId=" + userId);
         return tradeRepository.getCalendarDataPerDay(start, end, userId);
     }
 }

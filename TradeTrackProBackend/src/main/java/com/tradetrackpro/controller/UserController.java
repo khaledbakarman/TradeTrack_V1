@@ -27,7 +27,7 @@ public class UserController {
             AuthResponse resp = userService.register(request);
             return ResponseEntity.ok(resp);
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().body(new AuthResponse(null, ex.getMessage()));
+            return ResponseEntity.badRequest().body(new AuthResponse(null, null, null, ex.getMessage()));
         }
     }
 
@@ -43,8 +43,11 @@ public class UserController {
         System.out.println("Login successful for: " + user.getUsername());
         String token = jwtUtil.generateToken(user.getId(), user.getUsername());
 
-        return ResponseEntity.ok(Map.of(
-            "token", token
+        return ResponseEntity.ok(new AuthResponse(
+                user.getId(),
+                user.getUsername(),
+                token,
+                "Login successful"
         ));
     }
 }

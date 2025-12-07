@@ -17,10 +17,12 @@ export class LoginComponent {
   onLogin() {
     this.authService.login(this.username, this.password).subscribe({
       next: (res: any) => {
-        localStorage.setItem("token", res.token);
-        this.router.navigate(['/trades']);
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('userId', res.userId);
+        console.log('Login successful, userId saved:', res.userId);
+        this.router.navigate(['/home']);
       },
-      error: () => alert("Login failed")
+      error: () => alert('Login failed')
     });
   }
 }

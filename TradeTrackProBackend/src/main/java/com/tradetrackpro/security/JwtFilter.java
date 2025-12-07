@@ -23,18 +23,19 @@ public class JwtFilter implements Filter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            System.out.println("JwtFilter - Token received: " + token.substring(0, 10) + "...");
+            System.out.println("JwtFilter: Token received in header: " + token.substring(0, Math.min(10, token.length())) + "...");
 
             try {
                 Long userId = jwtUtil.getUserId(token);
-                System.out.println("JwtFilter - Extracted userId: " + userId);
+                System.out.println("JwtFilter: Validated token, extracted userId: " + userId);
                 req.setAttribute("userId", userId);
 
             } catch (Exception e) {
-                System.out.println("JwtFilter - Token validation failed: " + e.getMessage());
+                System.out.println("JwtFilter: Token validation FAILED: " + e.getMessage());
+                e.printStackTrace();
             }
         } else {
-            System.out.println("JwtFilter - No Authorization header found");
+            System.out.println("JwtFilter: No valid Authorization header found. Header value: " + authHeader);
         }
 
         chain.doFilter(request, response);

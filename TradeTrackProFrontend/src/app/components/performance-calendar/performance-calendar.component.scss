@@ -2,16 +2,51 @@
     display: block;
 }
 
-/* Custom scrollbar if needed for larger cells */
+.calendar-container {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.day-cell {
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+    }
+}
+
+.calendar-grid {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom scrollbar for the component */
 ::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: #1e293b;
+    border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #334155;
-    border-radius: 4px;
+    background: #475569;
+    border-radius: 3px;
+
+    &:hover {
+        background: #64748b;
+    }
 }

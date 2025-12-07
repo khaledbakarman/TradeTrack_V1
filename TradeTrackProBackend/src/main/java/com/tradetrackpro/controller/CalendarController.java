@@ -25,7 +25,15 @@ public class CalendarController {
             @RequestParam int year,
             @RequestParam int month) {
         Long userId = (Long) request.getAttribute("userId");
+        System.out.println("Calendar API: Fetching for userId=" + userId + " year=" + year + " month=" + month);
+        
+        if (userId == null) {
+            System.out.println("Calendar API: UserId is NULL in request attribute!");
+            return ResponseEntity.badRequest().build();
+        }
+        
         List<CalendarDayDto> calendarData = calendarService.getCalendarData(year, month, userId);
+        System.out.println("Calendar API: Found " + calendarData.size() + " days with data.");
         return ResponseEntity.ok(calendarData);
     }
 }

@@ -1,70 +1,108 @@
-<div class="bg-[#0f1a2b] border border-slate-800 rounded-2xl p-6 shadow-xl">
-
+<div class="calendar-container bg-[#0f172a] rounded-xl p-6 border border-slate-700/50">
     <!-- Header -->
     <div class="flex items-center justify-between mb-6">
-        <button (click)="prevMonth()"
-            class="px-3 py-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors text-sm font-medium">
-            &laquo; Prev Month
-        </button>
-
-        <h2 class="text-xl font-bold text-white tracking-wide">{{ currentMonthYear }}</h2>
-
-        <button (click)="nextMonth()"
-            class="px-3 py-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors text-sm font-medium">
-            Next Month &raquo;
-        </button>
-    </div>
-
-    <!-- Calendar Grid -->
-    <div class="grid grid-cols-7 gap-2 mb-2">
-        <!-- Weekday Headers -->
-        <div *ngFor="let day of weekDays"
-            class="text-center text-xs font-semibold text-slate-500 uppercase tracking-wider py-2">
-            {{ day }}
-        </div>
-    </div>
-
-    <div class="grid grid-cols-7 gap-2">
-        <!-- Days -->
-        <div *ngFor="let day of calendarDays" (click)="onDateClick(day)" [ngClass]="getDayClass(day)"
-            class="group relative h-24 rounded-xl border border-white/5 p-2 transition-all duration-200 hover:scale-[1.02] cursor-pointer flex flex-col justify-between overflow-hidden">
-
-            <!-- Date Number -->
-            <span class="text-xs font-medium opacity-50">{{ day.dayNum }}</span>
-
-            <!-- Content (if trade exists) -->
-            <div *ngIf="day.hasTrade" class="flex flex-col items-end">
-                <span class="font-bold text-sm tracking-tight">
-                    {{ day.pnl | currency:'USD':'symbol':'1.0-0' }}
-                </span>
-                <div class="flex gap-1 mt-1 text-[10px] font-medium opacity-80">
-                    <span *ngIf="day.wins" class="text-emerald-300">{{ day.wins }}W</span>
-                    <span *ngIf="day.losses" class="text-red-300">{{ day.losses }}L</span>
-                </div>
-            </div>
-
-            <!-- Tooltip -->
-            <div *ngIf="day.hasTrade"
-                class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg p-2 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                <div class="text-center font-bold mb-1">{{ day.date | date:'mediumDate' }}</div>
-                <div class="flex justify-between px-1">
-                    <span class="text-slate-400">Net P/L:</span>
-                    <span [class.text-emerald-400]="day.pnl! > 0" [class.text-red-400]="day.pnl! < 0">
-                        {{ day.pnl | currency }}
-                    </span>
-                </div>
-                <div class="flex justify-between px-1 mt-1">
-                    <span class="text-slate-400">Trades:</span>
-                    <span>{{ (day.wins || 0) + (day.losses || 0) }}</span>
-                </div>
-            </div>
-
+        <h2 class="text-xl font-semibold text-white">Performance Calendar</h2>
+        <div class="flex items-center gap-4">
+            <button (click)="prevMonth()"
+                class="px-4 py-2 bg-slate-700/50 hover:bg-slate-600 text-white rounded-lg transition-all duration-200 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Prev
+            </button>
+            <span class="text-white font-medium min-w-[150px] text-center">{{ currentMonthYear }}</span>
+            <button (click)="nextMonth()"
+                class="px-4 py-2 bg-slate-700/50 hover:bg-slate-600 text-white rounded-lg transition-all duration-200 flex items-center gap-2">
+                Next
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
         </div>
     </div>
 
     <!-- Loading Overlay -->
-    <div *ngIf="loading"
-        class="absolute inset-0 bg-[#0f1a2b]/80 backdrop-blur-sm flex items-center justify-center rounded-2xl z-20">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
+    <div *ngIf="loading" class="flex items-center justify-center py-20">
+        <div class="animate-spin rounded-full h-10 w-10 border-4 border-emerald-500 border-t-transparent"></div>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div *ngIf="!loading" class="calendar-grid">
+        <!-- Week day headers -->
+        <div class="grid grid-cols-7 gap-2 mb-2">
+            <div *ngFor="let weekDay of weekDays" class="text-center text-sm font-medium text-slate-400 py-2">
+                {{ weekDay }}
+            </div>
+        </div>
+
+        <!-- Day cells -->
+        <div class="grid grid-cols-7 gap-2">
+            <div *ngFor="let day of calendarDays" (click)="onDateClick(day)" (mouseenter)="showTooltip($event, day)"
+                (mouseleave)="hideTooltip()"
+                [class]="'day-cell rounded-lg p-3 cursor-pointer transition-all duration-200 hover:scale-105 border border-slate-600/30 ' + getHeatColor(day)"
+                [class.opacity-30]="!day.isCurrentMonth" [class.pointer-events-none]="!day.isCurrentMonth">
+
+                <!-- Day Number -->
+                <div class="text-sm font-semibold mb-1" [class.text-white]="day.hasTrade"
+                    [class.text-slate-400]="!day.hasTrade">
+                    {{ day.dayNum }}
+                </div>
+
+                <!-- P/L Display -->
+                <div *ngIf="day.hasTrade && day.isCurrentMonth" class="space-y-1">
+                    <div class="text-xs font-bold" [class.text-emerald-300]="(day.pnl || 0) > 0"
+                        [class.text-red-300]="(day.pnl || 0) < 0" [class.text-slate-300]="(day.pnl || 0) === 0">
+                        {{ formatPnl(day.pnl) }}
+                    </div>
+                    <div class="text-[10px] text-slate-300">
+                        {{ day.wins || 0 }}W / {{ day.losses || 0 }}L
+                    </div>
+                </div>
+
+                <!-- No Trade Indicator -->
+                <div *ngIf="!day.hasTrade && day.isCurrentMonth" class="text-[10px] text-slate-500">
+                    No trades
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="flex items-center justify-center gap-6 mt-6 text-xs text-slate-400">
+        <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded bg-emerald-500/80"></div>
+            <span>High Profit</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded bg-emerald-500/40"></div>
+            <span>Profit</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded bg-red-500/40"></div>
+            <span>Loss</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded bg-red-500/80"></div>
+            <span>High Loss</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded bg-slate-700/50"></div>
+            <span>No Trades</span>
+        </div>
+    </div>
+</div>
+
+<!-- Tooltip -->
+<div *ngIf="tooltipVisible && tooltipDay"
+    class="fixed z-50 bg-slate-800 border border-slate-600 rounded-lg shadow-xl p-3 pointer-events-none"
+    [style.left.px]="tooltipX" [style.top.px]="tooltipY">
+    <div class="text-white font-semibold mb-1">{{ tooltipDay.date | date:'MMM d, yyyy' }}</div>
+    <div class="text-sm space-y-1">
+        <div [class.text-emerald-400]="(tooltipDay.pnl || 0) > 0" [class.text-red-400]="(tooltipDay.pnl || 0) < 0"
+            [class.text-slate-300]="(tooltipDay.pnl || 0) === 0">
+            P/L: {{ formatPnl(tooltipDay.pnl) }}
+        </div>
+        <div class="text-slate-300">Wins: {{ tooltipDay.wins || 0 }}</div>
+        <div class="text-slate-300">Losses: {{ tooltipDay.losses || 0 }}</div>
     </div>
 </div>

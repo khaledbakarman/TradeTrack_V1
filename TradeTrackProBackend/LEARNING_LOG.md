@@ -511,3 +511,37 @@ Common notes:
   - Users can now generate professional-grade PDF reports of their trading performance.
   - The export system is robust, crash-proof, and architecturally sound (std. REST practices).
   - Core data loading logic is now reliable across the stack.
+
+## 35) 2025-12-07 — Work Summary
+
+- **Backend Architecture & Stability**
+  - **Lombok Removal**: Removed Lombok annotations from multiple DTOs (AuthResponse, TradeResponse, DailyPerformanceDTO, MonthlyStatsDTO) and entities (User) due to persistent compilation errors. Replaced with manual getters, setters, and constructors.
+  - **JPQL Fix**: Corrected ilterTrades in TradeRepository to properly filter by 'WIN'/'LOSS' and removed duplicate parameters.
+
+- **Performance Calendar Integration**
+  - **Frontend**:
+    - Created CalendarService to fetch aggregated monthly data.
+    - Implemented PerformanceCalendarComponent with a heatmap visualization (Green for profit, Red for loss).
+    - Added interactive tooltips showing P/L, Wins, and Losses per day.
+    - Implemented month navigation (Prev/Next).
+  - **Backend**:
+    - Leveraged TradeRepository.getCalendarDataPerDay to aggregate trade results by date.
+
+- **Critical Bug Fixes**
+  - **Date Mapping**: Fixed a timezone issue where calendar data wasn't appearing by normalizing dates to YYYY-MM-DD on the frontend before matching.
+  - **Infinite Redirect**: Fixed a loop where PerformanceCalendarComponent redirected to login due to missing userId. Removed the aggressive redirect and improved error handling.
+  - **Null UserId**:
+    - Identified that JwtFilter was only running on /api/trades/*.
+    - Updated WebConfig to apply the security filter to all /api/* endpoints, ensuring userId is extracted for Calendar requests too.
+  - **Login Response**: Updated UserController and AuthResponse to return the full user object (id, username, token) on login, ensuring localStorage is populated correctly.
+  - **Manual P/L Logic**: Enforced correct sign logic for manual P/L (LOSS = negative, WIN = positive) in TradeService.
+
+- **UX/Routing Improvements**
+  - **Default Landing**: Changed the default post-login redirect from /trades to /home.
+  - **Empty State**: Updated calendar to render an empty grid structure instead of disappearing when no user data is available.
+
+- **Outcome**
+  - The Performance Calendar is fully functional and visually integrated.
+  - Authentication flow is robust and secure across all endpoints.
+  - Backend is stable and free of 'cannot find symbol' errors.
+

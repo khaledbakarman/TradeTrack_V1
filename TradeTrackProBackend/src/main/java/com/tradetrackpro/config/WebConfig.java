@@ -29,7 +29,7 @@ public class WebConfig {
     public FilterRegistrationBean<JwtFilter> jwtFilterRegistration(JwtFilter filter) {
         FilterRegistrationBean<JwtFilter> reg = new FilterRegistrationBean<>();
         reg.setFilter(filter);
-        reg.addUrlPatterns("/api/trades/*"); // protect trade APIs
+        reg.addUrlPatterns("/api/*"); // protect all API endpoints
         return reg;
     }
 }
