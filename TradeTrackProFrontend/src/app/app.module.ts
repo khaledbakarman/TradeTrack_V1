@@ -14,6 +14,8 @@ import { AddTradeComponent } from './components/add-trade/add-trade.component';
 import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { EditTradeComponent } from './components/edit-trade/edit-trade.component';
+import { HomeComponent } from './components/home/home.component';
+import { PerformanceCalendarComponent } from './components/performance-calendar/performance-calendar.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
@@ -29,7 +31,9 @@ import { TradeCardComponent } from './components/trade-card/trade-card.component
     AnalyticsComponent,
     NavbarComponent,
     EditTradeComponent,
-    TradeCardComponent
+    HomeComponent,
+    TradeCardComponent,
+    PerformanceCalendarComponent
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,14 @@
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\config\WebConfig.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\controller\AnalyticsController.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\controller\CalendarController.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\controller\ExportController.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\controller\TradeController.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\controller\UserController.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\AuthResponse.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\CalendarDayDto.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\DailyPerformanceDTO.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\LoginRequest.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\MonthlyStatsDTO.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\RegisterRequest.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\TradeRequest.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\dto\TradeResponse.java
@@ -13,6 +18,8 @@ C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\trad
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\repository\UserRepository.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\security\JwtFilter.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\security\JwtUtil.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\service\AnalyticsService.java
+C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\service\CalendarService.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\service\ExportService.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\service\TradeService.java
 C:\Users\tareq\Desktop\TradeTrack_V1\TradeTrackProBackend\src\main\java\com\tradetrackpro\service\UserService.java

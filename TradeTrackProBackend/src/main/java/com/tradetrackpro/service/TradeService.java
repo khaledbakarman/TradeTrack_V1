@@ -27,21 +27,20 @@ public class TradeService {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        Trade trade = Trade.builder()
-                .user(user)
-                .symbol(request.getSymbol())
-                .entryPrice(asBigDecimal(request.getEntryPrice()))
-                .exitPrice(asBigDecimal(request.getExitPrice()))
-                .profitLoss(asBigDecimal(request.getProfitLoss()))
-                .notes(request.getNotes())
-                .tradeDate(request.getTradeDate())
-                .quantity(asBigDecimal(request.getQuantity()))
-                .positionType(request.getPositionType())
-                .outcome(request.getOutcome())
-                .tp(request.getTp())
-                .sl(request.getSl())
-                .result(request.getResult())
-                .build();
+        Trade trade = new Trade();
+        trade.setUser(user);
+        trade.setSymbol(request.getSymbol());
+        trade.setEntryPrice(asBigDecimal(request.getEntryPrice()));
+        trade.setExitPrice(asBigDecimal(request.getExitPrice()));
+        trade.setProfitLoss(asBigDecimal(request.getProfitLoss()));
+        trade.setNotes(request.getNotes());
+        trade.setTradeDate(request.getTradeDate());
+        trade.setQuantity(asBigDecimal(request.getQuantity()));
+        trade.setPositionType(request.getPositionType());
+        trade.setOutcome(request.getOutcome());
+        trade.setTp(request.getTp());
+        trade.setSl(request.getSl());
+        trade.setResult(request.getResult());
 
         Trade saved = tradeRepository.save(trade);
         return toResponse(saved);
@@ -114,22 +113,22 @@ public class TradeService {
     }
 
     private TradeResponse toResponse(Trade trade) {
-        return TradeResponse.builder()
-                .id(trade.getId())
-                .userId(trade.getUser().getId())
-                .symbol(trade.getSymbol())
-                .entryPrice(trade.getEntryPrice())
-                .exitPrice(trade.getExitPrice())
-                .profitLoss(trade.getProfitLoss())
-                .notes(trade.getNotes())
-                .tradeDate(trade.getTradeDate())
-                .quantity(trade.getQuantity())
-                .positionType(trade.getPositionType())
-                .outcome(trade.getOutcome())
-                .tp(trade.getTp())
-                .sl(trade.getSl())
-                .result(trade.getResult())
-                .build();
+        return new TradeResponse(
+                trade.getId(),
+                trade.getUser().getId(),
+                trade.getSymbol(),
+                trade.getEntryPrice(),
+                trade.getExitPrice(),
+                trade.getProfitLoss(),
+                trade.getNotes(),
+                trade.getTradeDate(),
+                trade.getQuantity(),
+                trade.getPositionType(),
+                trade.getOutcome(),
+                trade.getTp(),
+                trade.getSl(),
+                trade.getResult()
+        );
     }
 
     private void validateRequest(TradeRequest request) {

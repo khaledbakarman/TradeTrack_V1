@@ -1,0 +1,50 @@
+/* Frosted Glass Style */
+.glass-card {
+    background: rgba(30, 41, 59, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Dropdown Animation */
+.animate-dropdown {
+    animation: fadeSlide 0.2s ease-out;
+}
+
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Menu Items */
+.menu-item {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: transparent;
+    color: #e5e7eb;
+    font-size: 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(3px);
+}
+
+/* Profile Button */
+.profile-btn:hover {
+    opacity: 0.9;
+}

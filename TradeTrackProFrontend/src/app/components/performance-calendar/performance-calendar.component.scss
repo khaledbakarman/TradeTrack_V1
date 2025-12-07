@@ -1,0 +1,17 @@
+:host {
+    display: block;
+}
+
+/* Custom scrollbar if needed for larger cells */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}

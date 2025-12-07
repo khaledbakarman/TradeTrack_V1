@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CurrencyService } from '../../services/currency.service';
@@ -28,12 +28,37 @@ export class NavbarComponent {
     return !hiddenRoutes.includes(this.router.url);
   }
 
+  toggleCurrency() {
+    this.currencyService.toggleCurrency();
+  }
+
+  isProfileMenuOpen = false;
+
+  toggleProfileMenu() {
+    this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
+  goToTrades() {
+    this.isProfileMenuOpen = false;
+    this.router.navigate(['/trades']);
+  }
+
+  goToAnalytics() {
+    this.isProfileMenuOpen = false;
+    this.router.navigate(['/analytics']);
+  }
+
   logout() {
-    this.authService.logout();
+    localStorage.clear();
+    this.isProfileMenuOpen = false;
     this.router.navigate(['/login']);
   }
 
-  toggleCurrency() {
-    this.currencyService.toggleCurrency();
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.profile-wrapper')) {
+      this.isProfileMenuOpen = false;
+    }
   }
 }

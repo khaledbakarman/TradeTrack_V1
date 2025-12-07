@@ -20,11 +20,10 @@ public class UserService {
         userRepository.findByUsername(request.getUsername())
                 .ifPresent(u -> { throw new IllegalArgumentException("Username already exists"); });
 
-        User user = User.builder()
-                .username(request.getUsername())
-                .password(request.getPassword()) // TODO: hash in future
-                .createdAt(LocalDateTime.now())
-                .build();
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword()); // TODO: hash in future
+        user.setCreatedAt(LocalDateTime.now());
 
         User saved = userRepository.save(user);
         return new AuthResponse(saved.getId(), "Registration successful");

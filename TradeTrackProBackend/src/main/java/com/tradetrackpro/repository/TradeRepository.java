@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface TradeRepository extends JpaRepository<Trade, Long> {
     List<Trade> findByUserId(Long userId);
+    List<Trade> findAllByUserIdAndTradeDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
 
     @Query("""
         SELECT t FROM Trade t 
@@ -20,8 +21,8 @@ public interface TradeRepository extends JpaRepository<Trade, Long> {
           AND (:startDate IS NULL OR t.tradeDate >= :startDate)
           AND (:endDate IS NULL OR t.tradeDate <= :endDate)
           AND (:result IS NULL OR 
-                (:result = 'win' AND t.profitLoss > 0) OR
-                (:result = 'loss' AND t.profitLoss < 0))
+                (:result = 'WIN' AND t.profitLoss > 0) OR
+                (:result = 'LOSS' AND t.profitLoss < 0))
     """)
     Page<Trade> filterTrades(
             @Param("userId") Long userId,
@@ -29,5 +30,25 @@ public interface TradeRepository extends JpaRepository<Trade, Long> {
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
             @Param("result") String result,
-            Pageable pageable);
+            Pageable pageable
+    );
+
+    @Query(value = """
+        SELECT new com.tradetrackpro.dto.CalendarDayDto(
+            t.tradeDate,
+            SUM(t.profitLoss),
+            SUM(CASE WHEN t.outcome = 'WIN' THEN 1 ELSE 0 END),
+            SUM(CASE WHEN t.outcome = 'LOSS' THEN 1 ELSE 0 END)
+        )
+        FROM Trade t
+        WHERE t.user.id = :userId 
+        AND t.tradeDate BETWEEN :start AND :end
+        GROUP BY t.tradeDate
+        ORDER BY t.tradeDate
+        """)
+    List<com.tradetrackpro.dto.CalendarDayDto> getCalendarDataPerDay(
+            @Param("start") LocalDate start,
+            @Param("end") LocalDate end,
+            @Param("userId") Long userId
+    );
 }
