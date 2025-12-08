@@ -22,4 +22,23 @@ public class AnalyticsController {
         MonthlyStatsDTO stats = analyticsService.getMonthlyStats(userId);
         return ResponseEntity.ok(stats);
     }
+
+    @GetMapping("/weekly")
+    public ResponseEntity<com.tradetrackpro.dto.WeeklyAnalyticsResponse> getWeeklyAnalytics(
+            HttpServletRequest request,
+            @org.springframework.web.bind.annotation.RequestParam @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate startDate,
+            @org.springframework.web.bind.annotation.RequestParam @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate endDate) {
+        Long userId = (Long) request.getAttribute("userId");
+        com.tradetrackpro.dto.WeeklyAnalyticsResponse response = analyticsService.getWeeklyAnalytics(userId, startDate, endDate);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/weekly-debug")
+    public ResponseEntity<com.tradetrackpro.dto.WeeklyAnalyticsResponse> getWeeklyAnalyticsDebug(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        java.time.LocalDate start = java.time.LocalDate.now().with(java.time.DayOfWeek.SUNDAY);
+        java.time.LocalDate end = start.plusDays(6);
+        com.tradetrackpro.dto.WeeklyAnalyticsResponse response = analyticsService.getWeeklyAnalytics(userId, start, end);
+        return ResponseEntity.ok(response);
+    }
 }

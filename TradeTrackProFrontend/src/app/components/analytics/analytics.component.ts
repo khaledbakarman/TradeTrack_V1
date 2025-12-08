@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { TradeService } from '../../services/trade.service';
 import { Trade } from '../../models/trade.model';
 import { CurrencyService } from '../../services/currency.service';
+import { AnalyticsService } from '../../services/analytics.service';
 import flatpickr from "flatpickr";
 
 @Component({
@@ -115,7 +116,11 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     }
   };
 
-  constructor(private tradeService: TradeService, private currencyService: CurrencyService) {
+  constructor(
+    private tradeService: TradeService,
+    private currencyService: CurrencyService,
+    private analyticsService: AnalyticsService
+  ) {
     this.currencyService.currency$.subscribe(c => this.currency = c);
   }
 
@@ -126,6 +131,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
         this.allTrades = data.sort((a, b) => a.id - b.id);
         this.filteredTrades = [...this.allTrades];
         this.updateAnalytics(this.filteredTrades);
+        this.loadWeeklyChart(); // Load weekly chart on init
       },
       error: (err) => console.error('Error loading analytics:', err)
     });
@@ -309,5 +315,82 @@ export class AnalyticsComponent implements OnInit, AfterViewInit {
     }
 
     return 'bg-gray-700 text-gray-300';
+  }
+
+  // Correct day-of-week order matching backend and chart labels
+  private dayKeyOrder = [
+    'SUNDAY',
+    'MONDAY',
+    'TUESDAY',
+    'WEDNESDAY',
+    'THURSDAY',
+    'FRIDAY',
+    'SATURDAY'
+  ];
+
+  private getCurrentWeekRangeLocalDates() {
+    const now = new Date();
+    const day = now.getDay(); // 0 = Sunday, 1 = Monday...
+    const start = new Date(now);
+    start.setHours(0, 0, 0, 0);
+    start.setDate(now.getDate() - day); // go back to Sunday
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    end.setHours(23, 59, 59, 999);
+
+    // Fixed: Use local date formatting to avoid UTC timezone shift
+    const toIsoLocal = (d: Date) => {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    return { startIso: toIsoLocal(start), endIso: toIsoLocal(end), startDate: start, endDate: end };
+  }
+
+  loadWeeklyChart() {
+    const { startIso, endIso } = this.getCurrentWeekRangeLocalDates();
+    console.log('Loading weekly chart for range:', startIso, 'to', endIso);
+
+    this.analyticsService.getWeeklyData(startIso, endIso).subscribe({
+      next: (res) => {
+        console.log('API Weekly Map:', res.profitByDay);
+        this.updateWeeklyChartFromApi(res.profitByDay);
+      },
+      error: (err) => console.error('Error loading weekly chart:', err)
+    });
+  }
+
+  // Fix mapping so each backend day maps correctly to chart index
+  updateWeeklyChartFromApi(apiMap: Record<string, number>) {
+    const values = new Array(7).fill(0);
+
+    Object.entries(apiMap || {}).forEach(([key, value]) => {
+      const normalized = key.toUpperCase().trim();
+      const index = this.dayKeyOrder.indexOf(normalized);
+
+      if (index !== -1) {
+        values[index] = Number(value) || 0;
+      } else {
+        console.warn("Unmapped day from backend:", key);
+      }
+    });
+
+    console.log("Mapped Weekly Values (Sun..Sat):", values);
+
+    const weekChartLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    this.dayData = {
+      labels: weekChartLabels,
+      datasets: [
+        {
+          label: 'Profit by Day of Week',
+          data: values,
+          backgroundColor: values.map(v => v >= 0 ? "#10B981" : "#EF4444"),
+          borderColor: "#1E293B",
+          borderWidth: 2
+        }
+      ]
+    };
   }
 }

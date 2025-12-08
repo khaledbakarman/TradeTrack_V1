@@ -65,6 +65,14 @@ public class TradeService {
                 .collect(Collectors.toList());
     }
 
+    // Returns the latest 4 trades for the recent trades widget
+    public List<TradeResponse> getRecentTrades(Long userId) {
+        return tradeRepository.findTop4ByUserIdOrderByTradeDateDesc(userId)
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
     public org.springframework.data.domain.Page<Trade> getFilteredTrades(Long userId, String symbol, java.time.LocalDate startDate, java.time.LocalDate endDate, String result, org.springframework.data.domain.Pageable pageable) {
          return tradeRepository.filterTrades(userId, symbol, startDate, endDate, result, pageable);
     }

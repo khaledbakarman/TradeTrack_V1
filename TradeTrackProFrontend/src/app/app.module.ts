@@ -20,6 +20,7 @@ import { PerformanceCalendarComponent } from './components/performance-calendar/
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
 import { TradeCardComponent } from './components/trade-card/trade-card.component';
+import { QuickStatsComponent } from './components/quick-stats/quick-stats.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { TradeCardComponent } from './components/trade-card/trade-card.component
     EditTradeComponent,
     HomeComponent,
     TradeCardComponent,
-    PerformanceCalendarComponent
+    PerformanceCalendarComponent,
+    QuickStatsComponent
   ],
   imports: [
     BrowserModule,

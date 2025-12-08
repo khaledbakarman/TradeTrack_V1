@@ -119,4 +119,28 @@ public class AnalyticsService {
                 .sorted(Comparator.comparing(com.tradetrackpro.dto.DailyPerformanceDTO::getDate))
                 .toList();
     }
+
+    public com.tradetrackpro.dto.WeeklyAnalyticsResponse getWeeklyAnalytics(Long userId, LocalDate start, LocalDate end) {
+        List<Trade> trades = tradeRepository.findTradesForWeek(userId, start, end);
+
+        // Use LinkedHashMap to preserve Sunday -> Saturday order
+        java.util.Map<String, BigDecimal> profitByDay = new java.util.LinkedHashMap<>();
+        
+        // Ensure order: SUNDAY -> SATURDAY
+        String[] days = {"SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"};
+        for (String d : days) {
+            profitByDay.put(d, BigDecimal.ZERO);
+        }
+
+        // Use getDayOfWeek().name() to get uppercase day names (MONDAY, TUESDAY, etc.)
+        for (Trade t : trades) {
+            if (t.getTradeDate() != null && t.getProfitLoss() != null) {
+                String dayKey = t.getTradeDate().getDayOfWeek().name(); // e.g. "MONDAY"
+                BigDecimal current = profitByDay.getOrDefault(dayKey, BigDecimal.ZERO);
+                profitByDay.put(dayKey, current.add(t.getProfitLoss()));
+            }
+        }
+
+        return new com.tradetrackpro.dto.WeeklyAnalyticsResponse(profitByDay);
+    }
 }

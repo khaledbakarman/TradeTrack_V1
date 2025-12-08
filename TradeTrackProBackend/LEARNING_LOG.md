@@ -512,7 +512,7 @@ Common notes:
   - The export system is robust, crash-proof, and architecturally sound (std. REST practices).
   - Core data loading logic is now reliable across the stack.
 
-## 35) 2025-12-07 — Work Summary
+## 35) 2025-12-07 ï¿½ Work Summary
 
 - **Backend Architecture & Stability**
   - **Lombok Removal**: Removed Lombok annotations from multiple DTOs (AuthResponse, TradeResponse, DailyPerformanceDTO, MonthlyStatsDTO) and entities (User) due to persistent compilation errors. Replaced with manual getters, setters, and constructors.
@@ -544,4 +544,43 @@ Common notes:
   - The Performance Calendar is fully functional and visually integrated.
   - Authentication flow is robust and secure across all endpoints.
   - Backend is stable and free of 'cannot find symbol' errors.
+
+
+
+### **[Day 7] - Dec 08, 2025**
+**Goal:** Implement Dashboard Features (Weekly Analytics Fix, Quick Stats, Recent Trades).
+
+1. **Weekly Analytics Chart Fix**
+   - **Issue:** Saturday trades were not displaying or appearing as phantom Sunday trades due to timezone offsets.
+   - **Fix:** Updated AnalyticsComponent to calculate week ranges using local date strings (YYYY-MM-DD) instead of 	oISOString().
+   - **Backend:** Updated getWeeklyAnalytics to use LinkedHashMap ensuring Sunday-Saturday order and canonical day names.
+   - **Result:** Weekly chart now accurately reflects trades for the current week (Sun-Sat).
+
+2. **Home Page - Quick Stats**
+   - **Implementation:** Created QuickStatsComponent to display key monthly metrics.
+   - **Features:**
+     - Net P/L (Color-coded)
+     - Total Trades
+     - Win Rate
+     - Avg P/L per Trade (Calculated on frontend)
+   - **UI:** 4-card responsive layout with dark theme and tooltips.
+
+3. **Home Page - Recent Trades**
+   - **Backend:**
+     - Added indTop4ByUserIdOrderByTradeDateDesc to TradeRepository.
+     - Exposed GET /api/trades/recent endpoint.
+   - **Frontend:**
+     - Implemented RecentTrades section on Home.
+     - **Evolution:**
+       - Initial: Basic list.
+       - Iteration 1: Custom Glassmorphism Cards.
+       - Iteration 2: Reused TradeCardComponent (Too large).
+       - Final: **Compact Dashboard Cards** (2-column grid, no buttons, specific styling).
+   - **Features:** Shows Symbol, Date, Type/Size, Entry/Exit, P/L, and Outcome Badge without edit/delete actions.
+
+4. **Technical Improvements**
+   - **TypeScript:** Fixed type mismatch (BREAK vs BREAKEVEN) and event handling (delete vs 	radeDeleted).
+   - **Consistency:** Aligned recent trades UI with the overall dark dashboard theming.
+
+**Current Status:** Home Dashboard is now fully featured with Quick Stats, Recent Trades, and Performance Calendar.
 

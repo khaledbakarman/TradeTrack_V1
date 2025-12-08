@@ -20,4 +20,10 @@ export class AnalyticsService {
     getCalendarData(year: number, month: number): Observable<any[]> {
         return this.http.get<any[]>(`${this.calendarUrl}/month?year=${year}&month=${month}`);
     }
+
+    getWeeklyData(startDate: string, endDate: string): Observable<any> {
+        return this.http.get(`${this.apiUrl}/weekly`, {
+            params: { startDate, endDate }
+        });
+    }
 }

@@ -1,3 +1,14 @@
-:host {
-    display: block;
+/* Compact Dashboard Trade Card */
+.compact-trade-card {
+    background: linear-gradient(135deg, #0f1a2a 0%, #121e32 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.compact-trade-card:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
 }

@@ -62,6 +62,18 @@ public class TradeController {
         }
     }
 
+    // Handles GET /api/trades/recent to return the latest 4 trades
+    @GetMapping("/recent")
+    public ResponseEntity<List<TradeResponse>> getRecentTrades(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        System.out.println("getRecentTrades - userId: " + userId);
+        
+        List<TradeResponse> recentTrades = tradeService.getRecentTrades(userId);
+        System.out.println("Found recent trades: " + recentTrades.size());
+        
+        return ResponseEntity.ok(recentTrades);
+    }
+
     // Handles GET /api/trades/{id} to fetch a single trade by its id
     @GetMapping("/{id}")
     public ResponseEntity<?> getTradeById(@PathVariable Long id) {

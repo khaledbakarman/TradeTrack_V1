@@ -3,6 +3,7 @@ com\tradetrackpro\dto\AuthResponse.class
 com\tradetrackpro\dto\DailyPerformanceDTO.class
 com\tradetrackpro\service\CalendarService.class
 com\tradetrackpro\service\ExportService.class
+com\tradetrackpro\dto\WeeklyAnalyticsResponse.class
 com\tradetrackpro\controller\CalendarController.class
 com\tradetrackpro\model\Trade.class
 com\tradetrackpro\dto\TradeRequest.class

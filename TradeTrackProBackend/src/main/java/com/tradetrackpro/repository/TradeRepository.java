@@ -13,6 +13,9 @@ import java.util.List;
 public interface TradeRepository extends JpaRepository<Trade, Long> {
     List<Trade> findByUserId(Long userId);
     List<Trade> findAllByUserIdAndTradeDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
+    
+    // Fetch latest 4 trades for recent trades widget
+    List<Trade> findTop4ByUserIdOrderByTradeDateDesc(Long userId);
 
     @Query("""
         SELECT t FROM Trade t 
@@ -32,6 +35,15 @@ public interface TradeRepository extends JpaRepository<Trade, Long> {
             @Param("result") String result,
             Pageable pageable
     );
+
+    @Query("""
+        SELECT t FROM Trade t
+        WHERE t.user.id = :userId
+          AND t.tradeDate BETWEEN :startDate AND :endDate
+    """)
+    List<Trade> findTradesForWeek(@Param("userId") Long userId,
+                                  @Param("startDate") LocalDate start,
+                                  @Param("endDate") LocalDate end);
 
     @Query(value = """
         SELECT new com.tradetrackpro.dto.CalendarDayDto(

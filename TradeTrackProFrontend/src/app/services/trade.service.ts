@@ -49,4 +49,8 @@ export class TradeService {
     });
   }
 
+  getRecentTrades(): Observable<Trade[]> {
+    return this.http.get<Trade[]>(`${this.apiUrl}/recent`);
+  }
+
 }

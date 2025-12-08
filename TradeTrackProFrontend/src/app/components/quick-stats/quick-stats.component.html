@@ -1,0 +1,75 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <!-- Net P/L Card -->
+    <div (click)="navigateToAnalytics()"
+        class="bg-trade-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-700 hover:border-gray-600"
+        title="Net Profit/Loss = Sum of all profits and losses for the current month. Click to view detailed analytics.">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-medium text-gray-400">Net P/L</h3>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+        <div class="text-2xl font-bold" [ngClass]="getNetPnlColor()">
+            <span *ngIf="!loading">
+                <span *ngIf="netPnl >= 0">+</span>{{currency}}{{ netPnl | number:'1.2-2' }}
+            </span>
+            <span *ngIf="loading" class="text-gray-500">Loading...</span>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Current month</p>
+    </div>
+
+    <!-- Total Trades Card -->
+    <div class="bg-trade-card rounded-lg p-6 shadow-lg border border-gray-700"
+        title="Total number of trades executed this month">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-medium text-gray-400">Total Trades</h3>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+        <div class="text-2xl font-bold text-blue-400">
+            <span *ngIf="!loading">{{ totalTrades }}</span>
+            <span *ngIf="loading" class="text-gray-500">--</span>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Trades executed</p>
+    </div>
+
+    <!-- Win Rate Card -->
+    <div class="bg-trade-card rounded-lg p-6 shadow-lg border border-gray-700"
+        title="Win Rate = (Winning trades / Total trades) × 100">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-medium text-gray-400">Win Rate</h3>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+        <div class="text-2xl font-bold text-purple-400">
+            <span *ngIf="!loading">{{ winRate | number:'1.2-2' }}%</span>
+            <span *ngIf="loading" class="text-gray-500">--</span>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Success rate</p>
+    </div>
+
+    <!-- Avg P/L per Trade Card -->
+    <div class="bg-trade-card rounded-lg p-6 shadow-lg border border-gray-700"
+        title="Average Profit/Loss per Trade = Net P/L ÷ Total Trades">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-medium text-gray-400">Avg P/L per Trade</h3>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+        <div class="text-2xl font-bold" [ngClass]="getAvgPnlColor()">
+            <span *ngIf="!loading && totalTrades > 0">
+                <span *ngIf="avgPnlPerTrade >= 0">+</span>{{currency}}{{ avgPnlPerTrade | number:'1.2-2' }}
+            </span>
+            <span *ngIf="!loading && totalTrades === 0" class="text-gray-500">—</span>
+            <span *ngIf="loading" class="text-gray-500">Loading...</span>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Per trade average</p>
+    </div>
+</div>
