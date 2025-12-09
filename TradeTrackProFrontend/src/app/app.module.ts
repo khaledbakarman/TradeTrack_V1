@@ -21,6 +21,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
 import { TradeCardComponent } from './components/trade-card/trade-card.component';
 import { QuickStatsComponent } from './components/quick-stats/quick-stats.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ProfileSettingsComponent } from './components/profile-settings/profile-settings.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { QuickStatsComponent } from './components/quick-stats/quick-stats.compon
     HomeComponent,
     TradeCardComponent,
     PerformanceCalendarComponent,
-    QuickStatsComponent
+    QuickStatsComponent,
+    ForgotPasswordComponent,
+    ProfileSettingsComponent
   ],
   imports: [
     BrowserModule,

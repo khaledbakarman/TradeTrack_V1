@@ -11,21 +11,37 @@ export class RegisterComponent {
   username = '';
   password = '';
   confirmPassword = '';
+  securityQuestion = '';
+  securityAnswer = '';
+
+  securityQuestions = [
+    'What is the name of your first pet?',
+    'What city were you born in?',
+    'What is your mother\'s maiden name?',
+    'What was the name of your first school?',
+    'What is your favorite movie?',
+    'What is your favorite book?'
+  ];
 
   constructor(private authService: AuthService, private router: Router) { }
 
   register() {
-    if (this.password !== this.confirmPassword) {
-      alert("Passwords do not match!");
+    if (!this.securityQuestion) {
+      alert('Please select a security question!');
       return;
     }
 
-    const body = {
-      username: this.username,
-      password: this.password
-    };
+    if (!this.securityAnswer.trim()) {
+      alert('Please enter your security answer!');
+      return;
+    }
 
-    this.authService.register(body.username, body.password).subscribe({
+    if (this.password !== this.confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+
+    this.authService.register(this.username, this.password, this.securityQuestion, this.securityAnswer).subscribe({
       next: (response) => {
         alert('Registration successful!');
         console.log('Backend:', response);
@@ -42,3 +58,4 @@ export class RegisterComponent {
     });
   }
 }
+

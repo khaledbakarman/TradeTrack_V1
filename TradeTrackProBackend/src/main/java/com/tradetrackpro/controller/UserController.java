@@ -3,6 +3,10 @@ package com.tradetrackpro.controller;
 import com.tradetrackpro.dto.AuthResponse;
 import com.tradetrackpro.dto.LoginRequest;
 import com.tradetrackpro.dto.RegisterRequest;
+import com.tradetrackpro.dto.SecurityQuestionRequest;
+import com.tradetrackpro.dto.SecurityQuestionResponse;
+import com.tradetrackpro.dto.VerifyAnswerRequest;
+import com.tradetrackpro.dto.ResetPasswordRequest;
 import com.tradetrackpro.model.User;
 import com.tradetrackpro.security.JwtUtil;
 import com.tradetrackpro.service.UserService;
@@ -50,4 +54,35 @@ public class UserController {
                 "Login successful"
         ));
     }
+
+    @PostMapping("/get-security-question")
+    public ResponseEntity<?> getSecurityQuestion(@RequestBody SecurityQuestionRequest request) {
+        try {
+            String question = userService.getSecurityQuestion(request.getUsername());
+            return ResponseEntity.ok(new SecurityQuestionResponse(question));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
+        }
+    }
+
+    @PostMapping("/verify-security-answer")
+    public ResponseEntity<?> verifySecurityAnswer(@RequestBody VerifyAnswerRequest request) {
+        try {
+            boolean isValid = userService.verifySecurityAnswer(request.getUsername(), request.getAnswer());
+            return ResponseEntity.ok(Map.of("success", isValid));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(Map.of("success", false, "error", ex.getMessage()));
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        try {
+            userService.resetPassword(request.getUsername(), request.getNewPassword());
+            return ResponseEntity.ok(Map.of("success", true, "message", "Password reset successful"));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(Map.of("success", false, "error", ex.getMessage()));
+        }
+    }
 }
+
